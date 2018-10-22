@@ -1076,6 +1076,482 @@ export function timelineConfig(models, config, ui) {
         self.currentZoom = 4;
         break;
 
+      case 5: // 5-Minute
+        dateStep = 5;
+        labelFormat = d3.time.format.utc('%H:%M');
+        dateInterval = d3.time.minutes;
+        tickCount = (tl.data.end() - tl.data.start()) / 1000 / 60 / 5;
+        tickWidth = 1;
+        tickCountMax = tl.width;
+
+        paddedRange = [
+          new Date(
+            tl.data.start().setUTCMinutes(tl.data.start().getUTCMinutes() - 50)
+          ),
+          new Date(
+            tl.data.end().setUTCMinutes(tl.data.end().getUTCMinutes() + 50)
+          )
+        ];
+
+        altEnd = new Date(
+          tl.data.start().getUTCFullYear(),
+          tl.data.start().getUTCMonth(),
+          tl.data.start().getUTCDate(),
+          tl.data.start().getUTCHours(),
+          tl.data.start().getUTCMinutes() + tickCountMax
+        );
+
+        tl.zoom.drawTicks(
+          tickCount,
+          tickCountMax,
+          altEnd,
+          tickWidth,
+          dateInterval,
+          dateStep,
+          labelFormat,
+          event,
+          paddedRange
+        );
+
+        // Filters ticks for nonboundaries that have the following attribute
+        // Creates normal ticks, use this to space those tick
+        tl.zoom.current.ticks.normal.all = function() {
+          tl.ticks.normal.all = tl.ticks.all.filter(function(d) {
+            // This should be rewritten to be cleaner
+            if (d.getUTCHours() % 6 !== 0) {
+              return d;
+            } else {
+              return d.getUTCMinutes();
+            }
+          });
+          tl.ticks.normal.setEnds();
+        };
+
+        // Filters ticks for boundaries that have the following attribute
+        // Creates wider ticks; use this to space those ticks
+        tl.zoom.current.ticks.boundary.all = function() {
+          tl.ticks.boundary.all = tl.ticks.all.filter(function(d) {
+            return d.getUTCHours() % 6 === 0 && d.getUTCMinutes() === 0;
+          });
+        };
+
+        // Calculated next boundary tick by date
+        // The interval in which the white hover label shows
+        tl.zoom.current.ticks.boundary.next = function(current) {
+          var next = new Date(current);
+          return new Date(next.setUTCHours(next.getUTCHours() + 12));
+        };
+
+        // Calculated next normal tick by date
+        // The interval in which the hover semi-transparent bg appears over ticks
+        tl.zoom.current.ticks.normal.next = function(current) {
+          var next = new Date(current);
+          return new Date(next.setUTCMinutes(next.getUTCMinutes() + 5));
+        };
+
+        // Date of first printed boundary interval of this zoom level
+        tl.zoom.current.ticks.boundary.first = function() {
+          var first = tl.ticks.normal.firstDate;
+          return new Date(
+            Date.UTC(
+              first.getUTCFullYear(),
+              first.getUTCMonth(),
+              first.getUTCDate(),
+              first.getUTCHours() - 6,
+              0
+            )
+          );
+        };
+
+        // Date of first printed normal tick
+        tl.zoom.current.ticks.normal.first = function() {
+          var first = tl.ticks.normal.firstDate;
+          return new Date(
+            Date.UTC(
+              first.getUTCFullYear(),
+              first.getUTCMonth(),
+              first.getUTCDate(),
+              first.getUTCHours(),
+              first.getUTCMinutes() - 5
+            )
+          );
+        };
+
+        // Date of last printed boundary interval of this zoom level
+        tl.zoom.current.ticks.boundary.last = function() {
+          var last = tl.ticks.normal.lastDate;
+          return new Date(
+            Date.UTC(
+              last.getUTCFullYear(),
+              last.getUTCMonth(),
+              last.getUTCDate(),
+              last.getUTCHours() + 6,
+              0
+            )
+          );
+        };
+
+        // Value for normal tick hover label
+        tl.zoom.current.ticks.normal.hover = function(d) {
+          // No modifications to date obj at this zoom level
+          return d;
+        };
+
+        // Value for clicked normal tick
+        tl.zoom.current.ticks.normal.clickDate = function(d) {
+          d = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+          return new Date(
+            d.getUTCFullYear(),
+            d.getUTCMonth(),
+            d.getUTCDate(),
+            d.getUTCHours(),
+            d.getUTCMinutes()
+          );
+        };
+
+        // Value for boundary ribbon hover label
+        tl.zoom.current.ticks.boundary.hover = function(d) {
+          d = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+          return new Date(
+            d.getUTCFullYear(),
+            d.getUTCMonth(),
+            d.getUTCDate(),
+            d.getUTCHours(),
+            d.getUTCMinutes()
+          );
+        };
+
+        // Displayed default label
+        tl.zoom.current.ticks.boundary.label = function(d) {
+          // reutn null;
+          return (
+            util.pad(d.getUTCHours(), 2, '0') +
+            ':' +
+            util.pad(d.getUTCMinutes(), 2, '0')
+          );
+        };
+
+        // Displayed default sub-label (if any)
+        tl.zoom.current.ticks.boundary.subLabel = function(d) {
+          return null;
+        };
+
+        // Value for clicked boundary tick
+        // TODO: Return to 6 hr with 0 minute if pick is within 6 hour range, otherwise
+        // maintain the minute interval
+        tl.zoom.current.ticks.boundary.clickDate = function(d) {
+          d = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+          var selected = model.selected;
+          selected = new Date(
+            selected.getTime() - selected.getTimezoneOffset() * 60000
+          );
+          return new Date(
+            d.getUTCFullYear(),
+            d.getUTCMonth(),
+            d.getUTCDate(),
+            d.getUTCHours(),
+            selected.getUTCMinutes()
+          );
+        };
+
+        // When the date updates while dragging the pick forward
+        tl.zoom.current.pick.nextChange = function(d) {
+          d = util.roundTimeTenMinute(d);
+          return new Date(
+            Date.UTC(
+              d.getUTCFullYear(),
+              d.getUTCMonth(),
+              d.getUTCDate(),
+              d.getUTCHours(),
+              d.getUTCMinutes() + 5
+            )
+          );
+        };
+
+        // When the date updates while dragging the pick backward
+        tl.zoom.current.pick.prevChange = function(d) {
+          d = util.roundTimeTenMinute(d);
+          return new Date(
+            Date.UTC(
+              d.getUTCFullYear(),
+              d.getUTCMonth(),
+              d.getUTCDate(),
+              d.getUTCHours(),
+              d.getUTCMinutes()
+            )
+          );
+        };
+
+        tl.zoom.current.pick.hoverTick = function(newDate) {
+          tl.zoom.current.pick.hoveredTick = d3
+            .selectAll('.x.axis>g.tick')
+            .filter(function(d) {
+              return (
+                d.getUTCFullYear() === newDate.getUTCFullYear() &&
+                (d.getUTCMonth() === newDate.getUTCMonth() &&
+                  d.getUTCDate() === newDate.getUTCDate() &&
+                  d.getUTCHours() === newDate.getUTCHours() &&
+                  d.getUTCMinutes() === newDate.getUTCMinutes())
+              );
+            });
+        };
+        // Creates small hour notches in the timeline
+        d3.selectAll('.x.axis > g.tick').each(function() {
+          var currentTick = d3.select(this);
+          var currentTickData = currentTick.data()[0];
+          if (currentTickData.getUTCMinutes() === 0) {
+            currentTick
+              .insert('line', 'rect')
+              .attr('y1', 0)
+              .attr('y2', -10)
+              .attr('x2', 0)
+              .classed('tick-hour', true);
+          }
+        });
+
+        switchZoom(5);
+
+        self.currentZoom = 5;
+        break;
+
+      case 6: // 15-Minute
+        dateStep = 15;
+        labelFormat = d3.time.format.utc('%H:%M');
+        dateInterval = d3.time.minutes;
+        tickCount = (tl.data.end() - tl.data.start()) / 1000 / 60 / 15;
+        tickWidth = 1;
+        tickCountMax = tl.width;
+
+        paddedRange = [
+          new Date(
+            tl.data.start().setUTCMinutes(tl.data.start().getUTCMinutes() - 50)
+          ),
+          new Date(
+            tl.data.end().setUTCMinutes(tl.data.end().getUTCMinutes() + 50)
+          )
+        ];
+
+        altEnd = new Date(
+          tl.data.start().getUTCFullYear(),
+          tl.data.start().getUTCMonth(),
+          tl.data.start().getUTCDate(),
+          tl.data.start().getUTCHours(),
+          tl.data.start().getUTCMinutes() + tickCountMax
+        );
+
+        tl.zoom.drawTicks(
+          tickCount,
+          tickCountMax,
+          altEnd,
+          tickWidth,
+          dateInterval,
+          dateStep,
+          labelFormat,
+          event,
+          paddedRange
+        );
+
+        // Filters ticks for nonboundaries that have the following attribute
+        // Creates normal ticks, use this to space those tick
+        tl.zoom.current.ticks.normal.all = function() {
+          tl.ticks.normal.all = tl.ticks.all.filter(function(d) {
+            // This should be rewritten to be cleaner
+            if (d.getUTCHours() % 6 !== 0) {
+              return d;
+            } else {
+              return d.getUTCMinutes();
+            }
+          });
+          tl.ticks.normal.setEnds();
+        };
+
+        // Filters ticks for boundaries that have the following attribute
+        // Creates wider ticks; use this to space those ticks
+        tl.zoom.current.ticks.boundary.all = function() {
+          tl.ticks.boundary.all = tl.ticks.all.filter(function(d) {
+            return d.getUTCHours() % 6 === 0 && d.getUTCMinutes() === 0;
+          });
+        };
+
+        // Calculated next boundary tick by date
+        // The interval in which the white hover label shows
+        tl.zoom.current.ticks.boundary.next = function(current) {
+          var next = new Date(current);
+          return new Date(next.setUTCHours(next.getUTCHours() + 6));
+        };
+
+        // Calculated next normal tick by date
+        // The interval in which the hover semi-transparent bg appears over ticks
+        tl.zoom.current.ticks.normal.next = function(current) {
+          var next = new Date(current);
+          return new Date(next.setUTCMinutes(next.getUTCMinutes() + 15));
+        };
+
+        // Date of first printed boundary interval of this zoom level
+        tl.zoom.current.ticks.boundary.first = function() {
+          var first = tl.ticks.normal.firstDate;
+          return new Date(
+            Date.UTC(
+              first.getUTCFullYear(),
+              first.getUTCMonth(),
+              first.getUTCDate(),
+              first.getUTCHours() - 6,
+              0
+            )
+          );
+        };
+
+        // Date of first printed normal tick
+        tl.zoom.current.ticks.normal.first = function() {
+          var first = tl.ticks.normal.firstDate;
+          return new Date(
+            Date.UTC(
+              first.getUTCFullYear(),
+              first.getUTCMonth(),
+              first.getUTCDate(),
+              first.getUTCHours(),
+              first.getUTCMinutes() - 15
+            )
+          );
+        };
+
+        // Date of last printed boundary interval of this zoom level
+        tl.zoom.current.ticks.boundary.last = function() {
+          var last = tl.ticks.normal.lastDate;
+          return new Date(
+            Date.UTC(
+              last.getUTCFullYear(),
+              last.getUTCMonth(),
+              last.getUTCDate(),
+              last.getUTCHours() + 6,
+              0
+            )
+          );
+        };
+
+        // Value for normal tick hover label
+        tl.zoom.current.ticks.normal.hover = function(d) {
+          // No modifications to date obj at this zoom level
+          return d;
+        };
+
+        // Value for clicked normal tick
+        tl.zoom.current.ticks.normal.clickDate = function(d) {
+          d = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+          return new Date(
+            d.getUTCFullYear(),
+            d.getUTCMonth(),
+            d.getUTCDate(),
+            d.getUTCHours(),
+            d.getUTCMinutes()
+          );
+        };
+
+        // Value for boundary ribbon hover label
+        tl.zoom.current.ticks.boundary.hover = function(d) {
+          d = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+          return new Date(
+            d.getUTCFullYear(),
+            d.getUTCMonth(),
+            d.getUTCDate(),
+            d.getUTCHours(),
+            d.getUTCMinutes()
+          );
+        };
+
+        // Displayed default label
+        tl.zoom.current.ticks.boundary.label = function(d) {
+          // reutn null;
+          return (
+            util.pad(d.getUTCHours(), 2, '0') +
+            ':' +
+            util.pad(d.getUTCMinutes(), 2, '0')
+          );
+        };
+
+        // Displayed default sub-label (if any)
+        tl.zoom.current.ticks.boundary.subLabel = function(d) {
+          return null;
+        };
+
+        // Value for clicked boundary tick
+        // TODO: Return to 6 hr with 0 minute if pick is within 6 hour range, otherwise
+        // maintain the minute interval
+        tl.zoom.current.ticks.boundary.clickDate = function(d) {
+          d = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+          var selected = model.selected;
+          selected = new Date(
+            selected.getTime() - selected.getTimezoneOffset() * 60000
+          );
+          return new Date(
+            d.getUTCFullYear(),
+            d.getUTCMonth(),
+            d.getUTCDate(),
+            d.getUTCHours(),
+            selected.getUTCMinutes()
+          );
+        };
+
+        // When the date updates while dragging the pick forward
+        tl.zoom.current.pick.nextChange = function(d) {
+          d = util.roundTimeTenMinute(d);
+          return new Date(
+            Date.UTC(
+              d.getUTCFullYear(),
+              d.getUTCMonth(),
+              d.getUTCDate(),
+              d.getUTCHours(),
+              d.getUTCMinutes() + 15
+            )
+          );
+        };
+
+        // When the date updates while dragging the pick backward
+        tl.zoom.current.pick.prevChange = function(d) {
+          d = util.roundTimeTenMinute(d);
+          return new Date(
+            Date.UTC(
+              d.getUTCFullYear(),
+              d.getUTCMonth(),
+              d.getUTCDate(),
+              d.getUTCHours(),
+              d.getUTCMinutes()
+            )
+          );
+        };
+
+        tl.zoom.current.pick.hoverTick = function(newDate) {
+          tl.zoom.current.pick.hoveredTick = d3
+            .selectAll('.x.axis>g.tick')
+            .filter(function(d) {
+              return (
+                d.getUTCFullYear() === newDate.getUTCFullYear() &&
+                (d.getUTCMonth() === newDate.getUTCMonth() &&
+                  d.getUTCDate() === newDate.getUTCDate() &&
+                  d.getUTCHours() === newDate.getUTCHours() &&
+                  d.getUTCMinutes() === newDate.getUTCMinutes())
+              );
+            });
+        };
+        // Creates small hour notches in the timeline
+        d3.selectAll('.x.axis > g.tick').each(function() {
+          var currentTick = d3.select(this);
+          var currentTickData = currentTick.data()[0];
+          if (currentTickData.getUTCMinutes() === 0) {
+            currentTick
+              .insert('line', 'rect')
+              .attr('y1', 0)
+              .attr('y2', -10)
+              .attr('x2', 0)
+              .classed('tick-hour', true);
+          }
+        });
+
+        switchZoom(6);
+
+        self.currentZoom = 6;
+        break;
+
       default:
         console.log('Invalid Zoom level');
     }
@@ -1107,7 +1583,13 @@ export function timelineConfig(models, config, ui) {
         zoomElement = '#zoom-days';
         break;
       case 4:
-        zoomElement = '#zoom-minutes';
+        zoomElement = '#zoom-10-minutes';
+        break;
+      case 5:
+        zoomElement = '#zoom-5-minutes';
+        break;
+      case 6:
+        zoomElement = '#zoom-15-minutes';
         break;
     }
     $('#current-zoom').remove();

@@ -7,7 +7,7 @@ import lodashIndexOf from 'lodash/indexOf';
 import util from '../util/util';
 
 export function animationWidget(models, config, ui) {
-  var zooms = ['yearly', 'monthly', 'daily', '10-Minute'];
+  var zooms = ['yearly', 'monthly', 'daily', '10-Minute', '5-Minute', '15-Minute'];
   var self = {};
   var timeline = ui.timeline;
   var model = models.anim;
@@ -170,7 +170,7 @@ export function animationWidget(models, config, ui) {
    */
   self.getIncrements = function() {
     if (models.date.maxZoom > 3) {
-      zooms = ['yearly', 'monthly', 'daily', '10-Minute'];
+      zooms = ['yearly', 'monthly', 'daily', '10-Minute', '5-Minute', '15-Minute'];
     } else {
       zooms = ['yearly', 'monthly', 'daily'];
     }
@@ -294,7 +294,7 @@ export function animationWidget(models, config, ui) {
    */
   self.onPressPlay = function() {
     let zoomLevel = ui.anim.ui.getInterval();
-    if (zoomLevel !== 'minute') {
+    if (zoomLevel !== '10-minute' || zoomLevel !== '5-minute' || zoomLevel !== '15-minute') {
       // zero out start/end date times
       self.setZeroDateTimes();
     }

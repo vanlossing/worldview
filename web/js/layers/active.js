@@ -48,7 +48,7 @@ export function layersActive(models, ui, config) {
   };
   var toggleSubdaily = function() {
     if (subdailyCheck()) {
-      setMaxZoomlevel(4);
+      setMaxZoomlevel(6);
     } else {
       setMaxZoomlevel(3);
     }

@@ -96,7 +96,13 @@ class DateInputColumn extends React.Component {
         case 'hour':
           newDate = this.hourValidation(value);
           break;
-        case 'minute':
+        case '10-minute':
+          newDate = this.minuteValidation(value);
+          break;
+        case '5-minute':
+          newDate = this.minuteValidation(value);
+          break;
+        case '15-minute':
           newDate = this.minuteValidation(value);
           break;
       }
@@ -119,8 +125,12 @@ class DateInputColumn extends React.Component {
     }
   }
   onClickUp() {
-    if (this.props.type === 'minute') {
+    if (this.props.type === '10-minute') {
       this.rollDate(10);
+    } else if (this.props.type === '5-minute') {
+      this.rollDate(5);
+    } else if (this.props.type === '15-minute') {
+      this.rollDate(15);
     } else {
       this.rollDate(1);
     }
@@ -129,8 +139,12 @@ class DateInputColumn extends React.Component {
     });
   }
   onClickDown() {
-    if (this.props.type === 'minute') {
+    if (this.props.type === '10-minute') {
       this.rollDate(-10);
+    } if (this.props.type === '5-minute') {
+      this.rollDate(-5);
+    } if (this.props.type === '15-minute') {
+      this.rollDate(-15);
     } else {
       this.rollDate(-1);
     }

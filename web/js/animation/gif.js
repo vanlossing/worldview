@@ -571,7 +571,10 @@ export function animationGif(models, config, ui) {
         text: showDates ? strDate : '',
         delay: 1000 / interval
       });
-      if (ui.anim.ui.getInterval() === 'minute') {
+      if ((ui.anim.ui.getInterval() === '10-minute') ||
+        ui.anim.ui.getInterval() === '5-minute' ||
+        ui.anim.ui.getInterval() === '15-minute'
+      ) {
         intervalAmount = 10;
       } else {
         intervalAmount = 1;

@@ -10,7 +10,7 @@ export function animationUi(models, ui) {
   var animModel = models.anim;
   var queueLength;
   var queue = new Queue(5, Infinity);
-  var zooms = ['year', 'month', 'day', 'minute'];
+  var zooms = ['year', 'month', 'day', '10-minute', '5-minute', '15-minute'];
   var preload = {};
   var preloadArray;
   var inQueue;

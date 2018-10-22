@@ -221,11 +221,25 @@ class App extends React.Component {
                       Days
                     </span>
                     <span
-                      id="zoom-minutes"
-                      className="zoom-btn zoom-btn-inactive zoom-minutes"
+                      id="zoom-5-minutes"
+                      className="zoom-btn zoom-btn-inactive zoom-minutes zoom-5-minutes"
+                      data-zoom="5"
+                    >
+                      5-Min
+                    </span>
+                    <span
+                      id="zoom-10-minutes"
+                      className="zoom-btn zoom-btn-inactive zoom-minutes zoom-10-minutes"
                       data-zoom="4"
                     >
-                      Minutes
+                      10-Min
+                    </span>
+                    <span
+                      id="zoom-15-minutes"
+                      className="zoom-btn zoom-btn-inactive zoom-minutes zoom-15-minutes"
+                      data-zoom="6"
+                    >
+                      15-Min
                     </span>
                   </div>
                 </div>

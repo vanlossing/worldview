@@ -41,7 +41,13 @@ export function timelineInput(models, config, ui) {
             animateByIncrement(1, 'day');
             break;
           case 4:
-            animateByIncrement(10, 'minute');
+            animateByIncrement(10, '10-minute');
+            break;
+          case 5:
+            animateByIncrement(5, '5-minute');
+            break;
+          case 6:
+            animateByIncrement(15, '15-minute');
             break;
           default:
             animateByIncrement(1, 'day');
@@ -63,7 +69,13 @@ export function timelineInput(models, config, ui) {
             animateByIncrement(-1, 'day');
             break;
           case 4:
-            animateByIncrement(-10, 'minute');
+            animateByIncrement(-10, '10-minute');
+            break;
+          case 5:
+            animateByIncrement(-5, '5-minute');
+            break;
+          case 6:
+            animateByIncrement(-15, '15-minute');
             break;
           default:
             animateByIncrement(-1, 'day');
@@ -89,7 +101,13 @@ export function timelineInput(models, config, ui) {
                 animateByIncrement(-1, 'day');
                 break;
               case 4:
-                animateByIncrement(-10, 'minute');
+                animateByIncrement(-10, '10-minute');
+                break;
+              case 5:
+                animateByIncrement(-5, '5-minute');
+                break;
+              case 6:
+                animateByIncrement(-15, '15-minute');
                 break;
             }
             break;
@@ -105,7 +123,13 @@ export function timelineInput(models, config, ui) {
                 animateByIncrement(1, 'day');
                 break;
               case 4:
-                animateByIncrement(10, 'minute');
+                animateByIncrement(10, '10-minute');
+                break;
+              case 5:
+                animateByIncrement(5, '5-minute');
+                break;
+              case 6:
+                animateByIncrement(15, '15-minute');
                 break;
             }
             event.preventDefault();
@@ -151,7 +175,7 @@ export function timelineInput(models, config, ui) {
     var maxZoom = model.maxZoom;
     if (model.maxZoom >= 4 || config.parameters.showSubdaily) {
       document.getElementById('timeline-header').classList.add('subdaily');
-      maxZoom = 4;
+      maxZoom = 6;
     }
 
     return {
@@ -237,7 +261,19 @@ export function timelineInput(models, config, ui) {
             prevDate.getUTCDate() + delta
           )
         );
-      case 'minute':
+      case '10-minute':
+        return new Date(
+          new Date(model.selected).setUTCMinutes(
+            model.selected.getUTCMinutes() + increment
+          )
+        );
+      case '5-minute':
+        return new Date(
+          new Date(model.selected).setUTCMinutes(
+            model.selected.getUTCMinutes() + increment
+          )
+        );
+      case '15-minute':
         return new Date(
           new Date(prevDate).setUTCMinutes(
             prevDate.getUTCMinutes() + delta
