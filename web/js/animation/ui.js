@@ -202,6 +202,10 @@ export function animationUi(models, ui) {
   self.nextDate = function (date) {
     if (models.date.selectedZoom === 4) {
       return util.dateAdd(date, self.getInterval(), 10);
+    } else if (models.date.selectedZoom === 5) {
+      return util.dateAdd(date, self.getInterval(), 5);
+    } else if (models.date.selectedZoom === 6) {
+      return util.dateAdd(date, self.getInterval(), 15);
     } else {
       return util.dateAdd(date, self.getInterval(), 1);
     }

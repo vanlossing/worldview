@@ -40,7 +40,7 @@ export function timelineConfig(models, config, ui) {
     }
 
     // If zoom is not within range, set it to level 3 (daily)
-    if (level > 4 || level < 0) level = 3;
+    if (level > 6 || level < 0) level = 3;
     if (!subdailyFound && (level > 3 || level < 0)) level = 3;
 
     switch (level) {
@@ -1256,7 +1256,7 @@ export function timelineConfig(models, config, ui) {
 
         // When the date updates while dragging the pick forward
         tl.zoom.current.pick.nextChange = function(d) {
-          d = util.roundTimeTenMinute(d);
+          d = util.roundTimeFiveMinute(d);
           return new Date(
             Date.UTC(
               d.getUTCFullYear(),
@@ -1270,7 +1270,7 @@ export function timelineConfig(models, config, ui) {
 
         // When the date updates while dragging the pick backward
         tl.zoom.current.pick.prevChange = function(d) {
-          d = util.roundTimeTenMinute(d);
+          d = util.roundTimeFiveMinute(d);
           return new Date(
             Date.UTC(
               d.getUTCFullYear(),
@@ -1494,7 +1494,7 @@ export function timelineConfig(models, config, ui) {
 
         // When the date updates while dragging the pick forward
         tl.zoom.current.pick.nextChange = function(d) {
-          d = util.roundTimeTenMinute(d);
+          d = util.roundTimeFifteenMinute(d);
           return new Date(
             Date.UTC(
               d.getUTCFullYear(),
@@ -1508,7 +1508,7 @@ export function timelineConfig(models, config, ui) {
 
         // When the date updates while dragging the pick backward
         tl.zoom.current.pick.prevChange = function(d) {
-          d = util.roundTimeTenMinute(d);
+          d = util.roundTimeFifteenMinute(d);
           return new Date(
             Date.UTC(
               d.getUTCFullYear(),
@@ -1626,6 +1626,12 @@ export function timelineConfig(models, config, ui) {
           break;
         case '4':
           self.zoom(4);
+          break;
+        case '5':
+          self.zoom(5);
+          break;
+        case '6':
+          self.zoom(6);
           break;
         default:
           self.zoom(3);

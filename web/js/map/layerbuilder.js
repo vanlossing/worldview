@@ -127,7 +127,7 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
       date = models.date[models.date.activeDate];
       // If this not a subdaily layer, truncate the selected time to
       // UTC midnight
-      if (def.period !== 'subdaily') {
+      if ((def.period !== 'subdaily') && (!config.parameters.showSubdaily)) {
         date = util.clearTimeUTC(date);
       }
     }

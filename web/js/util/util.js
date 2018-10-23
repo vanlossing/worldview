@@ -371,6 +371,24 @@ export default (function (self) {
     return timeToReturn;
   };
 
+  self.roundTimeFiveMinute = function (time) {
+    var timeToReturn = new Date(time);
+
+    timeToReturn.setMilliseconds(Math.round(timeToReturn.getMilliseconds() / 1000) * 1000);
+    timeToReturn.setSeconds(Math.round(timeToReturn.getSeconds() / 60) * 60);
+    timeToReturn.setMinutes(Math.round(timeToReturn.getMinutes() / 5) * 5);
+    return timeToReturn;
+  };
+
+  self.roundTimeFifteenMinute = function (time) {
+    var timeToReturn = new Date(time);
+
+    timeToReturn.setMilliseconds(Math.round(timeToReturn.getMilliseconds() / 1000) * 1000);
+    timeToReturn.setSeconds(Math.round(timeToReturn.getSeconds() / 60) * 60);
+    timeToReturn.setMinutes(Math.round(timeToReturn.getMinutes() / 15) * 15);
+    return timeToReturn;
+  };
+
   /**
    * Sets a date to UTC midnight.
    *
@@ -392,7 +410,13 @@ export default (function (self) {
     var month, maxDay, year;
     var newDate = new Date(date);
     switch (interval) {
-      case 'minute':
+      case '10-minute':
+        newDate.setUTCMinutes(newDate.getUTCMinutes() + amount);
+        break;
+      case '5-minute':
+        newDate.setUTCMinutes(newDate.getUTCMinutes() + amount);
+        break;
+      case '15-minute':
         newDate.setUTCMinutes(newDate.getUTCMinutes() + amount);
         break;
       case 'hour':
