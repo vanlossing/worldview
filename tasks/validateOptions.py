@@ -81,11 +81,11 @@ for layer_id in wv["layers"].keys():
         else:
             remove_layer(wv, layer_id)
             continue
-    if "projections" not in layer or len(layer["projections"]) == 0:
-        error("[%s] No projections defined or not found in GC documents" %
-            layer_id)
-        remove_layer(wv, layer_id)
-        continue
+    # if "projections" not in layer or len(layer["projections"]) == 0:
+    #     error("[%s] No projections defined or not found in GC documents" %
+    #         layer_id)
+    #     remove_layer(wv, layer_id)
+    #     continue
     if "type" not in layer:
         error("[" + layer_id + "] No type defined. Possible to be expecting " +
             "configuration via GC document but was not found")
@@ -106,23 +106,23 @@ for layer_id in wv["layers"].keys():
     elif "group" not in layer:
         remove_layer(wv, layer_id)
         continue
-    for proj_id in layer["projections"].keys():
-        projection = layer["projections"][proj_id]
-        if "matrixSet" in projection:
-            source = projection["source"]
-            matrix_set = projection["matrixSet"]
-            if source not in wv["sources"]:
-                error("[%s:%s] Invalid source: %s" %
-                        (layer_id, proj_id, source))
-                del layer["projections"][proj_id]
-            elif "matrixSets" not in wv["sources"][source]:
-                error("[%s:%s] No matrix sets for projection" %
-                        (layer_id, proj_id))
-                del layer["projections"][proj_id]
-            elif matrix_set not in wv["sources"][source]["matrixSets"]:
-                error("[%s:%s] Invalid matrix set: %s" %
-                        (layer_id, proj_id, matrix_set))
-                del layer["projections"][proj_id]
+    # for proj_id in layer["projections"].keys():
+    #     projection = layer["projections"][proj_id]
+    #     if "matrixSet" in projection:
+    #         source = projection["source"]
+    #         matrix_set = projection["matrixSet"]
+    #         if source not in wv["sources"]:
+    #             error("[%s:%s] Invalid source: %s" %
+    #                     (layer_id, proj_id, source))
+    #             del layer["projections"][proj_id]
+    #         elif "matrixSets" not in wv["sources"][source]:
+    #             error("[%s:%s] No matrix sets for projection" %
+    #                     (layer_id, proj_id))
+    #             del layer["projections"][proj_id]
+    #         elif matrix_set not in wv["sources"][source]["matrixSets"]:
+    #             error("[%s:%s] Invalid matrix set: %s" %
+    #                     (layer_id, proj_id, matrix_set))
+    #             del layer["projections"][proj_id]
     if "temporal" in layer:
         warn("[%s] GC Layer temporal values overwritten by Options" % layer_id)
         layer = process_temporal(layer, layer["temporal"])

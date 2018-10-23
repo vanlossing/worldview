@@ -3,7 +3,7 @@
         "realtime_goes16_abi_fullDisk_airMass": {
             "id":       "realtime_goes16_abi_fullDisk_airMass",
             "title":    "False color composite 'air mass'",
-            "description": "sedac/realtime_goes16_abi_fullDisk_airMass",
+            "description": "sport/realtime_goes16_abi_fullDisk_airMass",
             "tags":     "sport",
             "group":    "overlays",
             "layergroup": [

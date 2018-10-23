@@ -3,7 +3,7 @@
         "realtime_goes16_abi_conus_band14_11p20um": {
             "id":       "realtime_goes16_abi_conus_band14_11p20um",
             "title":    "Infrared band 14",
-            "description": "sedac/realtime_goes16_abi_conus_band14_11p20um",
+            "description": "sport/realtime_goes16_abi_conus_band14_11p20um",
             "tags":     "sport",
             "group":    "overlays",
             "layergroup": [

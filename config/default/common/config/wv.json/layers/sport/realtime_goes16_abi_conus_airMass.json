@@ -3,7 +3,7 @@
         "realtime_goes16_abi_conus_airMass": {
             "id":       "realtime_goes16_abi_conus_airMass",
             "title":    "False color composite 'air mass'",
-            "description": "sedac/realtime_goes16_abi_conus_airMass",
+            "description": "sport/realtime_goes16_abi_conus_airMass",
             "tags":     "sport",
             "group":    "overlays",
             "layergroup": [

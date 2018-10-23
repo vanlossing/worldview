@@ -115,15 +115,15 @@ def process_sport_layer(gc_layer, wv_layers, colormaps):
     wv_layer = wv_layers[ident]
     wv_layer["id"] = ident
     wv_layer["type"] = "wmts"
-    wv_layer["format"] = gc_layer["Format"]
+    wv_layer["format"] = gc_layer["Style"]["LegendURL"]["Format"]
 
     # Extract start and end dates
     if "Dimension" in gc_layer:
         dimension = gc_layer["Dimension"]
-        if dimension["Name"] == "time":
-            wv_layer = process_temporal(wv_layer, dimension["Value"])
+        # if dimension["Name"] == "time":
+            # wv_layer = process_temporal(wv_layer, dimension["Value"])
     # Extract matrix set
-    matrixSet = gc_layer["TileMatrixSetLink"]["TileMatrixSet"]
+    matrixSet = "2km"
     wv_layer["projections"] = {
         entry["projection"]: {
             "source": entry["source"],
@@ -312,28 +312,27 @@ def process_sport_entry(entry, colormaps):
                 sys.stderr.write("%s: ERROR: [%s:%s] %s\n" % (prog, gc_id,
                         ident, str(e)))
 
-    def process_matrix_set(gc_matrix_set):
-        ident = gc_matrix_set["Name"]
-        zoom_levels = len(gc_matrix_set["TileMatrix"])
-        resolutions = []
-        max_resolution = entry["maxResolution"]
-        for zoom in xrange(0, zoom_levels):
-            resolutions = resolutions + [max_resolution / (2 ** zoom)]
-        wv_matrix_sets[ident] = {
-            "id": ident,
-            "maxResolution": max_resolution,
-            "resolutions": resolutions,
-            "tileSize": [
-                int(gc_matrix_set["TileMatrix"][0]["TileWidth"]),
-                int(gc_matrix_set["TileMatrix"][0]["TileHeight"])
-            ]
-        }
-
-    if(type(gc_contents["TileMatrixSet"]) is OrderedDict):
-        process_matrix_set(gc_contents["TileMatrixSet"])
-    else:
-        for gc_matrix_set in gc_contents["TileMatrixSet"]:
-            process_matrix_set(gc_matrix_set)
+    # def process_matrix_set(gc_matrix_set):
+    #     ident = gc_matrix_set["Name"]
+    #     zoom_levels = len(gc_matrix_set["TileMatrix"])
+    #     resolutions = []
+    #     max_resolution = entry["maxResolution"]
+    #     for zoom in xrange(0, zoom_levels):
+    #         resolutions = resolutions + [max_resolution / (2 ** zoom)]
+    #     wv_matrix_sets[ident] = {
+    #         "id": ident,
+    #         "maxResolution": max_resolution,
+    #         "resolutions": resolutions,
+    #         "tileSize": [
+    #             int(gc_matrix_set["TileMatrix"][0]["TileWidth"]),
+    #             int(gc_matrix_set["TileMatrix"][0]["TileHeight"])
+    #         ]
+    #     }
+    # if(type(gc_contents["TileMatrixSet"]) is OrderedDict):
+    #     process_matrix_set(gc_contents["TileMatrixSet"])
+    # else:
+    #     for gc_matrix_set in gc_contents["TileMatrixSet"]:
+    #         process_matrix_set(gc_matrix_set)
 
     output_file = os.path.join(output_dir, entry["to"])
     with open(output_file, "w") as fp:
