@@ -67,4 +67,12 @@ def process_temporal(wv_layer, value):
     except ValueError:
         raise
         raise Exception("Invalid time: {0}".format(range))
+    print wv_layer
+    return wv_layer
+
+def process_sport_temporal(wv_layer, value):
+    date_array = value.split(",")
+    wv_layer["startDate"] = date_array[0];
+    wv_layer["endDate"] = date_array[-1];
+    # Add dateRanges and period info here
     return wv_layer

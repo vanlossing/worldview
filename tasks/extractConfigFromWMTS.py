@@ -8,7 +8,7 @@ import sys
 import urllib2 as urllib
 import xmltodict
 import isodate
-from processTemporalLayer import process_temporal
+from processTemporalLayer import process_temporal, process_sport_temporal
 from collections import OrderedDict
 
 prog = os.path.basename(__file__)
@@ -120,8 +120,8 @@ def process_sport_layer(gc_layer, wv_layers, colormaps):
     # Extract start and end dates
     if "Dimension" in gc_layer:
         dimension = gc_layer["Dimension"]
-        # if dimension["Name"] == "time":
-            # wv_layer = process_temporal(wv_layer, dimension["Value"])
+        if dimension["@name"] == "time":
+            wv_layer = process_sport_temporal(wv_layer, dimension["#text"])
     # Extract matrix set
     matrixSet = "2km"
     wv_layer["projections"] = {
