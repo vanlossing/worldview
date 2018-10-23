@@ -67,12 +67,43 @@ def process_temporal(wv_layer, value):
     except ValueError:
         raise
         raise Exception("Invalid time: {0}".format(range))
-    print wv_layer
     return wv_layer
 
 def process_sport_temporal(wv_layer, value):
-    date_array = value.split(",")
-    wv_layer["startDate"] = date_array[0];
-    wv_layer["endDate"] = date_array[-1];
-    # Add dateRanges and period info here
+    try:
+        start_date = datetime.max
+        end_date = datetime.min
+        date_range_start, date_range_end, range_interval = [], [], []
+        date_array = value.split(",")
+        for dates in date_array:
+            ranges = to_list(value)
+            if "T" in ranges[0]:
+                wv_layer["period"] = "subdaily"
+            else:
+                if ranges[0].endswith("Y"):
+                    wv_layer["period"] = "yearly"
+                elif ranges[0].endswith("M"):
+                    wv_layer["period"] = "monthly"
+                else:
+                    wv_layer["period"] = "daily"
+            startTime = date_array[0].replace('T', ' ').replace('Z', '').replace('.000', '')
+            endTime = date_array[-1].replace('T', ' ').replace('Z', '').replace('.000', '')
+            start_date = min(start_date,
+                datetime.strptime(startTime, "%Y-%m-%d %H:%M:%S"))
+            end_date = max(end_date,
+                datetime.strptime(endTime, "%Y-%m-%d %H:%M:%S"))
+            if start_date:
+                startTimeParse = datetime.strptime(startTime, "%Y-%m-%d %H:%M:%S")
+                date_range_start.append(startTimeParse.strftime("%Y-%m-%d") + "T" + startTimeParse.strftime("%H:%M:%S") + "Z")
+            if end_date:
+                endTimeParse = datetime.strptime(endTime, "%Y-%m-%d %H:%M:%S")
+                date_range_end.append(endTimeParse.strftime("%Y-%m-%d") + "T" + endTimeParse.strftime("%H:%M:%S") + "Z")
+            if end_date != datetime.min:
+                wv_layer["endDate"] = end_date.strftime("%Y-%m-%d") + "T" + end_date.strftime("%H:%M:%S") + "Z"
+            if date_range_start and date_range_end:
+                wv_layer["dateRanges"] = [{"startDate": s, "endDate": e, "dateInterval": i} for s, e, i in zip(date_range_start, date_range_end, "1")]
+            # the "1" above in dateRanges should be a calculated value (5 or 15 for 5 or 15-min interval)?
+    except ValueError:
+        raise
+        raise Exception("Invalid time: {0}".format(range))
     return wv_layer
