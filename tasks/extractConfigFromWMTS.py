@@ -105,6 +105,53 @@ def process_layer(gc_layer, wv_layers, colormaps):
                         "id": colormap_id
                     }
 
+def process_sport_layer(gc_layer, wv_layers, colormaps):
+    ident = gc_layer["Name"]
+    if ident in skip:
+        print "%s: skipping" % ident
+        raise SkipException(ident)
+
+    wv_layers[ident] = {}
+    wv_layer = wv_layers[ident]
+    wv_layer["id"] = ident
+    wv_layer["type"] = "wmts"
+    wv_layer["format"] = gc_layer["Format"]
+
+    # Extract start and end dates
+    if "Dimension" in gc_layer:
+        dimension = gc_layer["Dimension"]
+        if dimension["Name"] == "time":
+            wv_layer = process_temporal(wv_layer, dimension["Value"])
+    # Extract matrix set
+    matrixSet = gc_layer["TileMatrixSetLink"]["TileMatrixSet"]
+    wv_layer["projections"] = {
+        entry["projection"]: {
+            "source": entry["source"],
+            "matrixSet": matrixSet
+        }
+    }
+
+    # Colormap links
+    if "ows:Metadata" in gc_layer:
+        if "skipPalettes" in config and ident in config["skipPalettes"]:
+            sys.stderr.write("%s: WARNING: Skipping palette for %s\n" % (
+                prog, ident))
+            global total_warning_count
+            total_warning_count += 1
+        else:
+            for item in gc_layer["ows:Metadata"]:
+                if "@xlink:role" not in item:
+                    raise KeyError("No xlink:role")
+                schema_version = item["@xlink:role"]
+
+                if schema_version == "http://earthdata.nasa.gov/gibs/metadata-type/colormap/1.3":
+                    colormap_link = item["@xlink:href"]
+                    colormap_file = os.path.basename(colormap_link)
+                    colormap_id = os.path.splitext(colormap_file)[0]
+                    wv_layer["palette"] = {
+                        "id": colormap_id
+                    }
+
 def process_entry(entry, colormaps):
     layer_count = 0
     warning_count = 0
@@ -200,11 +247,110 @@ def process_entry(entry, colormaps):
             error_count, warning_count, layer_count, entry["source"])
     return [error_count, warning_count, layer_count]
 
+def process_sport_entry(entry, colormaps):
+    layer_count = 0
+    warning_count = 0
+    error_count = 0
+    wv = {
+        "layers": {},
+        "sources": {}
+    }
+    wv_matrix_sets = {}
+    wv["sources"][entry["source"]] = {
+        "matrixSets": wv_matrix_sets
+    }
+
+    input_file = os.path.join(input_dir, entry["from"])
+    gc_id = os.path.basename(input_file)
+    try:
+        with open(input_file) as fp:
+            xml = fp.read()
+            gc = xmltodict.parse(xml)
+    except Exception as e:
+        if tolerant:
+            sys.stderr.write("%s:   WARN: [%s] Unable to get GC: %s\n" %
+                    (prog, input_file, str(e)))
+            warning_count += 1
+        else:
+            sys.stderr.write("%s: ERROR: [%s] Unable to get GC: %s\n" %
+                    (prog, input_file, str(e)))
+            error_count += 1
+        return [error_count, warning_count, layer_count]
+
+    gc_contents = gc["WMS_Capabilities"]["Capability"]["Layer"]
+    wv_layers = wv["layers"]
+
+    if gc_contents is None or "Layer" not in gc_contents:
+        error_count += 1
+        sys.stderr.write("%s: ERROR: [%s] %s\n" % (prog, gc_id, "No layers"))
+        return [error_count, warning_count, layer_count]
+
+    if(type(gc["WMS_Capabilities"]["Capability"]["Layer"]["Layer"]) is OrderedDict):
+        gc_layer = gc["WMS_Capabilities"]["Capability"]["Layer"]["Layer"]
+        ident = gc_layer["Name"]
+        try:
+            layer_count += 1
+            process_sport_layer(gc_layer, wv_layers, colormaps)
+        except SkipException as se:
+            warning_count += 1
+            sys.stderr.write("%s: WARNING: [%s] Skipping\n" % (prog, ident))
+        except Exception as e:
+            error_count += 1
+            sys.stderr.write("%s: ERROR: [%s:%s] %s\n" % (prog, gc_id,
+                    ident, str(e)))
+    else:
+        for gc_layer in gc_contents["Layer"]:
+            ident = gc_layer["Name"]
+            try:
+                layer_count += 1
+                process_sport_layer(gc_layer, wv_layers, colormaps)
+            except SkipException as se:
+                warning_count += 1
+                sys.stderr.write("%s: WARNING: [%s] Skipping\n" % (prog, id))
+            except Exception as e:
+                error_count += 1
+                sys.stderr.write("%s: ERROR: [%s:%s] %s\n" % (prog, gc_id,
+                        ident, str(e)))
+
+    def process_matrix_set(gc_matrix_set):
+        ident = gc_matrix_set["Name"]
+        zoom_levels = len(gc_matrix_set["TileMatrix"])
+        resolutions = []
+        max_resolution = entry["maxResolution"]
+        for zoom in xrange(0, zoom_levels):
+            resolutions = resolutions + [max_resolution / (2 ** zoom)]
+        wv_matrix_sets[ident] = {
+            "id": ident,
+            "maxResolution": max_resolution,
+            "resolutions": resolutions,
+            "tileSize": [
+                int(gc_matrix_set["TileMatrix"][0]["TileWidth"]),
+                int(gc_matrix_set["TileMatrix"][0]["TileHeight"])
+            ]
+        }
+
+    if(type(gc_contents["TileMatrixSet"]) is OrderedDict):
+        process_matrix_set(gc_contents["TileMatrixSet"])
+    else:
+        for gc_matrix_set in gc_contents["TileMatrixSet"]:
+            process_matrix_set(gc_matrix_set)
+
+    output_file = os.path.join(output_dir, entry["to"])
+    with open(output_file, "w") as fp:
+        json.dump(wv, fp, **json_options)
+    print "%s: %d error(s), %d warning(s), %d layers for %s" % (prog,
+            error_count, warning_count, layer_count, entry["source"])
+    return [error_count, warning_count, layer_count]
+
 
 # Main
 colormaps = {}
 for entry in entries:
-    error_count, warning_count, layer_count = process_entry(entry, colormaps)
+    fileName = entry["from"]
+    if fileName == "sport-geographic.xml":
+        error_count, warning_count, layer_count = process_sport_entry(entry, colormaps)
+    else:
+        error_count, warning_count, layer_count = process_entry(entry, colormaps)
     total_error_count += error_count
     total_warning_count += warning_count
     total_layer_count += layer_count

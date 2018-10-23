@@ -1,0 +1,16 @@
+{
+    "layers": {
+        "realtime_goes16_abi_fullDisk_band14_11p20um": {
+            "id":       "realtime_goes16_abi_fullDisk_band14_11p20um",
+            "title":    "Infrared band 14",
+            "description": "sedac/realtime_goes16_abi_fullDisk_band14_11p20um",
+            "tags":     "sport",
+            "group":    "overlays",
+            "layergroup": [
+              "sport"
+            ],
+            "inactive": true,
+            "wrapX": true
+        }
+    }
+}

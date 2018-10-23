@@ -14,6 +14,9 @@
         },
         "SEDAC:wms": {
             "url": "https://sedac.ciesin.columbia.edu/geoserver/wms"
+        },
+        "SPORT:geographic": {
+            "url": "https://wms1.nsstc.nasa.gov/geoserver/GOES/wms"
         }
     }
 }

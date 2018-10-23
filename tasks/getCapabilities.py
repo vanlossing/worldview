@@ -65,6 +65,24 @@ def process_layer(layer):
                     colormap_id = os.path.splitext(colormap_file)[0]
                     colormaps[colormap_id] = colormap_link
 
+def process_sport_layer(layer):
+    ident = layer["Name"]
+    # if "ows:Metadata" in layer:
+    #     if ident in config.get("skipPalettes", []):
+    #         sys.stderr.write("%s:    WARN: Skipping palette for %s\n" %
+    #                          prog, ident)
+    #         global warning_count
+    #         warning_count += 1
+    #     else:
+    #         for item in layer["ows:Metadata"]:
+    #             schema_version = item["@xlink:role"]
+    #             if schema_version == "http://earthdata.nasa.gov/gibs/metadata-type/colormap/1.3":
+    #                 colormap_link = item["@xlink:href"]
+    #                 #colormap_link = layer["ows:Metadata"]["@xlink:href"]
+    #                 colormap_file = os.path.basename(colormap_link)
+    #                 colormap_id = os.path.splitext(colormap_file)[0]
+    #                 colormaps[colormap_id] = colormap_link
+
 def process_remote(entry):
     url = entry["from"]
     print "%s: %s" % (prog, url)
@@ -93,6 +111,34 @@ def process_remote(entry):
         print('error: %s: %s' % (url, str(e)))
         print(str(traceback.format_exc()))
 
+def process_sport_remote(entry):
+    url = entry["from"]
+    print "%s: %s" % (prog, url)
+    response = http.request('GET', url)
+    contents = response.data
+    output_file = os.path.join(output_dir, entry["to"])
+
+    # Write GetCapabilities responses to XML files
+    with open(output_file, "w") as fp:
+        fp.write(contents)
+    gc = xmltodict.parse(contents)
+
+    # Find all colormaps in GetCapabilities responses and store them in memory
+    if gc["WMS_Capabilities"]["Capability"] is None:
+        print('error: %s: no layers' % url)
+        return
+
+    try:
+        if(type(gc["WMS_Capabilities"]["Capability"]["Layer"]["Layer"]) is OrderedDict):
+            process_sport_layer(gc["WMS_Capabilities"]["Capability"]["Layer"]["Layer"])
+        else:
+            for layer in gc["WMS_Capabilities"]["Capability"]["Layer"]["Layer"]:
+                process_sport_layer(layer)
+
+    except Exception as e:
+        print('error: %s: %s' % (url, str(e)))
+        print(str(traceback.format_exc()))
+
 # Fetch every colormap from the API and write response to file system
 def process_colormaps():
     print "%s: Fetching %d colormaps" % (prog, len(colormaps))
@@ -115,16 +161,29 @@ def process_colormaps():
 tolerant = config.get("tolerant", False)
 if "wv-options-fetch" in config:
     for entry in config["wv-options-fetch"]:
-        try:
-            remote_count += 1
-            process_remote(entry)
-        except Exception as e:
-            if tolerant:
-                warning_count += 1
-                sys.stderr.write("%s:   WARN: %s\n" % (prog, str(e)))
-            else:
-                error_count += 1
-                sys.stderr.write("%s: ERROR: %s\n" % (prog, str(e)))
+        fileName = entry["to"]
+        if fileName == "sport-geographic.xml":
+            try:
+                remote_count += 1
+                process_sport_remote(entry)
+            except Exception as e:
+                if tolerant:
+                    warning_count += 1
+                    sys.stderr.write("%s:   WARN: %s\n" % (prog, str(e)))
+                else:
+                    error_count += 1
+                    sys.stderr.write("%s: ERROR: %s\n" % (prog, str(e)))
+        else:
+            try:
+                remote_count += 1
+                process_remote(entry)
+            except Exception as e:
+                if tolerant:
+                    warning_count += 1
+                    sys.stderr.write("%s:   WARN: %s\n" % (prog, str(e)))
+                else:
+                    error_count += 1
+                    sys.stderr.write("%s: ERROR: %s\n" % (prog, str(e)))
     if colormaps:
         process_colormaps()
 

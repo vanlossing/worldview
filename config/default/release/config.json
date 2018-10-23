@@ -11,7 +11,12 @@
         {
             "from": "https://gibs.earthdata.nasa.gov/wmts/epsg3031/best/wmts.cgi?request=GetCapabilities",
             "to": "gibs-antarctic.xml"
+        },
+        {
+            "from": "https://wms1.nsstc.nasa.gov/geoserver/GOES/wms?VERSION=1.3.0&SERVICE=WMS&REQUEST=GetCapabilities",
+            "to": "sport-geographic.xml"
         }
+
     ],
     "wv-options-wmts": [
         {
@@ -34,6 +39,13 @@
             "to": "gibs-antarctic.json",
             "projection": "antarctic",
             "maxResolution": 8192.0
+        },
+        {
+            "source": "SPORT:geographic",
+            "from": "sport-geographic.xml",
+            "to": "sport-geographic.json",
+            "projection": "geographic",
+            "maxResolution": 0.5625
         }
     ]
 }

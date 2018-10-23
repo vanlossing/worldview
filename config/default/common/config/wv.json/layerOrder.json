@@ -1,5 +1,9 @@
 {
     "layerOrder": [
+        "realtime_goes16_abi_conus_band14_11p20um",
+        "realtime_goes16_abi_fullDisk_band14_11p20um",
+        "realtime_goes16_abi_conus_airMass",
+        "realtime_goes16_abi_fullDisk_airMass",
         "VIIRS_SNPP_CorrectedReflectance_TrueColor",
         "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11",
         "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1",
