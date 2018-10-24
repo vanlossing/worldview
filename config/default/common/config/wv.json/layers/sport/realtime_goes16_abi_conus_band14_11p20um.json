@@ -10,7 +10,15 @@
               "sport"
             ],
             "inactive": true,
-            "wrapX": true
+            "wrapX": true,
+            "tileSize": [512, 512],
+            "type":     "wms",
+            "transition":   "true",
+            "projections": {
+                "geographic": {
+                    "source": "SPORT:geographic"
+                }
+            }
         }
     }
 }

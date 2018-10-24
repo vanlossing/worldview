@@ -427,8 +427,13 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
     if (day) {
       date = util.dateAdd(date, 'day', day);
     }
-    urlParameters =
-      '?TIME=' + util.toISOStringSeconds(util.roundTimeOneMinute(date));
+    if (def.source === 'SPORT:geographic') {
+      urlParameters =
+      '?TIME=' + util.toISOStringSeconds(date);
+    } else {
+      urlParameters =
+        '?TIME=' + util.toISOStringSeconds(util.roundTimeOneMinute(date));
+    }
 
     var sourceOptions = {
       url: source.url + urlParameters,
