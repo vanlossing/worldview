@@ -1139,7 +1139,7 @@ export function timelineConfig(models, config, ui) {
         // The interval in which the white hover label shows
         tl.zoom.current.ticks.boundary.next = function(current) {
           var next = new Date(current);
-          return new Date(next.setUTCHours(next.getUTCHours() + 12));
+          return new Date(next.setUTCHours(next.getUTCHours() + 6));
         };
 
         // Calculated next normal tick by date

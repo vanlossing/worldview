@@ -415,30 +415,32 @@ export function timelineTicks(models, config, ui) {
       // trigger hover state
       boundaryTick.select('rect.boundarytick-background')
         .classed('bg-hover', true);
-      if (models.date.selectedZoom >= 4) {
-        boundaryTick.append('svg:text')
-          .attr('class', 'hover-tick-label')
-          .attr('y', '15')
-          .attr('x', boundaryTickWidth / 2)
-          .attr('style', 'text-anchor:middle')
-          .attr('width', boundaryTickWidth)
-          .text(d.getUTCFullYear() +
-          ' ' + model.monthAbbr[d.getUTCMonth()] +
-          ' ' + d.getUTCDate() +
-          ' ' + util.pad(d.getUTCHours(), 2, '0') +
-          ':' + util.pad(d.getUTCMinutes(), 2, '0') +
-          ' (' + util.daysInYear(d) + ')');
-      } else {
-        boundaryTick.append('svg:text')
-          .attr('class', 'hover-tick-label')
-          .attr('y', '15')
-          .attr('x', boundaryTickWidth / 2)
-          .attr('style', 'text-anchor:middle')
-          .attr('width', boundaryTickWidth)
-          .text(d.getUTCFullYear() +
+      if (d) {
+        if (models.date.selectedZoom >= 4) {
+          boundaryTick.append('svg:text')
+            .attr('class', 'hover-tick-label')
+            .attr('y', '15')
+            .attr('x', boundaryTickWidth / 2)
+            .attr('style', 'text-anchor:middle')
+            .attr('width', boundaryTickWidth)
+            .text(d.getUTCFullYear() +
             ' ' + model.monthAbbr[d.getUTCMonth()] +
             ' ' + d.getUTCDate() +
-            ' (' + util.daysInYear(d) + ')'); // Add hover Label
+            ' ' + util.pad(d.getUTCHours(), 2, '0') +
+            ':' + util.pad(d.getUTCMinutes(), 2, '0') +
+            ' (' + util.daysInYear(d) + ')');
+        } else {
+          boundaryTick.append('svg:text')
+            .attr('class', 'hover-tick-label')
+            .attr('y', '15')
+            .attr('x', boundaryTickWidth / 2)
+            .attr('style', 'text-anchor:middle')
+            .attr('width', boundaryTickWidth)
+            .text(d.getUTCFullYear() +
+              ' ' + model.monthAbbr[d.getUTCMonth()] +
+              ' ' + d.getUTCDate() +
+              ' (' + util.daysInYear(d) + ')'); // Add hover Label
+        }
       }
     },
     remove: function () { // TODO: update
