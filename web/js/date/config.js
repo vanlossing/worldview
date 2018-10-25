@@ -1205,7 +1205,8 @@ export function timelineConfig(models, config, ui) {
             d.getUTCMonth(),
             d.getUTCDate(),
             d.getUTCHours(),
-            d.getUTCMinutes()
+            d.getUTCMinutes(),
+            19
           );
         };
 
@@ -1250,7 +1251,8 @@ export function timelineConfig(models, config, ui) {
             d.getUTCMonth(),
             d.getUTCDate(),
             d.getUTCHours(),
-            selected.getUTCMinutes()
+            selected.getUTCMinutes(),
+            19
           );
         };
 
@@ -1263,7 +1265,8 @@ export function timelineConfig(models, config, ui) {
               d.getUTCMonth(),
               d.getUTCDate(),
               d.getUTCHours(),
-              d.getUTCMinutes() + 5
+              d.getUTCMinutes() + 5,
+              19
             )
           );
         };
@@ -1277,7 +1280,8 @@ export function timelineConfig(models, config, ui) {
               d.getUTCMonth(),
               d.getUTCDate(),
               d.getUTCHours(),
-              d.getUTCMinutes()
+              d.getUTCMinutes(),
+              19
             )
           );
         };
@@ -1443,7 +1447,8 @@ export function timelineConfig(models, config, ui) {
             d.getUTCMonth(),
             d.getUTCDate(),
             d.getUTCHours(),
-            d.getUTCMinutes()
+            d.getUTCMinutes(),
+            37
           );
         };
 
@@ -1488,7 +1493,8 @@ export function timelineConfig(models, config, ui) {
             d.getUTCMonth(),
             d.getUTCDate(),
             d.getUTCHours(),
-            selected.getUTCMinutes()
+            selected.getUTCMinutes(),
+            37
           );
         };
 
@@ -1501,7 +1507,8 @@ export function timelineConfig(models, config, ui) {
               d.getUTCMonth(),
               d.getUTCDate(),
               d.getUTCHours(),
-              d.getUTCMinutes() + 15
+              d.getUTCMinutes() + 15,
+              37
             )
           );
         };
@@ -1515,7 +1522,8 @@ export function timelineConfig(models, config, ui) {
               d.getUTCMonth(),
               d.getUTCDate(),
               d.getUTCHours(),
-              d.getUTCMinutes()
+              d.getUTCMinutes(),
+              37
             )
           );
         };
@@ -1569,6 +1577,7 @@ export function timelineConfig(models, config, ui) {
   };
 
   var switchZoom = function(zoomLevel) {
+    model.events.trigger('update-timewheel');
     var clone;
     var zoomElement;
     model.events.trigger('update-timewheel');

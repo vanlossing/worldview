@@ -9,7 +9,6 @@
             "layergroup": [
               "sport"
             ],
-            "inactive": true,
             "wrapX": true,
             "tileSize": [512, 512],
             "type":     "wms",

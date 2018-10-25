@@ -74,7 +74,7 @@ var dateWheels = function(models, config) {
       });
   };
 
-  var min5TimeWheel = function () {
+  var min1TimeWheel = function () {
     $('#wv-date-mobile-label').css('width', 140);
     $('#wv-date-mobile-label')
       .html(util.toISOStringSeconds(model.selected).split('T').join(' T'));
@@ -94,35 +94,7 @@ var dateWheels = function(models, config) {
           $('#wv-date-mobile-label')
             .css('display', 'block');
         },
-        stepMinute: 5,
-        dateFormat: 'yyyy-mm-dd',
-        setText: 'OK',
-        timeFormat: 'T' + 'HH:ii:ss' + 'Z',
-        timeWheels: '|HH:ii|'
-      });
-  };
-
-  var min15TimeWheel = function () {
-    $('#wv-date-mobile-label').css('width', 140);
-    $('#wv-date-mobile-label')
-      .html(util.toISOStringSeconds(model.selected).split('T').join(' T'));
-    $('#linkmode')
-      .mobiscroll()
-      .datetime({
-        display: 'bottom',
-        onChange: function (valueText) {
-          var d = util.parseDateUTC(valueText);
-          model.select(d);
-        },
-        onShow: function () {
-          $('#wv-date-mobile-label')
-            .css('display', 'none');
-        },
-        onClose: function () {
-          $('#wv-date-mobile-label')
-            .css('display', 'block');
-        },
-        stepMinute: 15,
+        stepMinute: 1,
         dateFormat: 'yyyy-mm-dd',
         setText: 'OK',
         timeFormat: 'T' + 'HH:ii:ss' + 'Z',
@@ -131,12 +103,12 @@ var dateWheels = function(models, config) {
   };
 
   var setTimeWheel = function () {
-    if (models.date.maxZoom === 4) {
+    if (models.date.selectedZoom === 4) {
       min10TimeWheel();
-    } else if (models.date.maxZoom === 5) {
-      min5TimeWheel();
-    } else if (models.date.maxZoom === 5) {
-      min15TimeWheel();
+    } else if (models.date.selectedZoom === 5) {
+      min1TimeWheel();
+    } else if (models.date.selectedZoom === 6) {
+      min1TimeWheel();
     } else {
       dateWheel();
     }

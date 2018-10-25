@@ -27,7 +27,6 @@ export function animationWidget(models, config, ui) {
    */
   self.init = function() {
     $animateButton = $('#animate-button');
-
     var props = {
       onPushPlay: self.onPressPlay,
       onPushLoop: self.onPressLoop,

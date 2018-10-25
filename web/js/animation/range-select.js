@@ -250,9 +250,18 @@ export function animationRangeSelect(models, config, ui) {
    *
    */
   self.updateRange = function(startLocation, EndLocation) {
-    var startDate = util.roundTimeTenMinute(timeline.x.invert(startLocation));
-    var endDate = util.roundTimeTenMinute(timeline.x.invert(EndLocation));
+    var startDate, endDate;
     var state = model.rangeState;
+    if (models.date.selectedZoom === 5) {
+      startDate = util.roundTimeFiveMinute(timeline.x.invert(startLocation));
+      endDate = util.roundTimeFiveMinute(timeline.x.invert(EndLocation));
+    } else if (models.date.selectedZoom === 6) {
+      startDate = util.roundTimeFifteenMinute(timeline.x.invert(startLocation));
+      endDate = util.roundTimeFifteenMinute(timeline.x.invert(EndLocation));
+    } else {
+      startDate = util.roundTimeTenMinute(timeline.x.invert(startLocation));
+      endDate = util.roundTimeTenMinute(timeline.x.invert(EndLocation));
+    }
     state.startDate = util.toISOStringSeconds(startDate) || 0;
     // prevent endDate overdrag from occuring in monthly/yearly by setting to max date limit
     if (models.date.selectedZoom < 3) {
