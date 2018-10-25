@@ -123,11 +123,10 @@ def process_sport_layer(gc_layer, wv_layers, colormaps):
         if dimension["@name"] == "time":
             wv_layer = process_sport_temporal(wv_layer, dimension["#text"])
     # Extract matrix set
-    matrixSet = "2km"
+    # matrixSet = "2km"
     wv_layer["projections"] = {
         entry["projection"]: {
             "source": entry["source"],
-            "matrixSet": matrixSet
         }
     }
 

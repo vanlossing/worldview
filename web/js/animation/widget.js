@@ -294,7 +294,7 @@ export function animationWidget(models, config, ui) {
    */
   self.onPressPlay = function() {
     let zoomLevel = ui.anim.ui.getInterval();
-    if (zoomLevel !== '10-minute' || zoomLevel !== '5-minute' || zoomLevel !== '15-minute') {
+    if (zoomLevel !== '10-minute' && zoomLevel !== '5-minute' && zoomLevel !== '15-minute') {
       // zero out start/end date times
       self.setZeroDateTimes();
     }
@@ -405,7 +405,7 @@ export function animationWidget(models, config, ui) {
   self.onPressGIF = function() {
     let zoomLevel = ui.anim.ui.getInterval();
     let looping = ui.anim.widget.reactComponent.state.looping;
-    if (zoomLevel !== 'minute') {
+    if (zoomLevel !== '10-minute' && zoomLevel !== '5-minute' && zoomLevel !== '15-minute') {
       // zero out start/end date times
       self.setZeroDateTimes();
     }
