@@ -2,7 +2,8 @@
     "layers": {
         "realtime_goes16_abi_fullDisk_airMass": {
             "id":       "realtime_goes16_abi_fullDisk_airMass",
-            "title":    "False color composite 'air mass'",
+            "title":    "Air Mass (Full Disk - 15 minute)",
+            "subtitle":    "GOES-16 / ABI",
             "description": "sport/realtime_goes16_abi_fullDisk_airMass",
             "tags":     "sport",
             "group":    "overlays",

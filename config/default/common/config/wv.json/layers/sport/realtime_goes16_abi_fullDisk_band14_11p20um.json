@@ -2,7 +2,8 @@
     "layers": {
         "realtime_goes16_abi_fullDisk_band14_11p20um": {
             "id":       "realtime_goes16_abi_fullDisk_band14_11p20um",
-            "title":    "Infrared band 14",
+            "title":    "Infrared band 14 (Full Disk - 15 minute)",
+            "subtitle":    "GOES-16 / ABI",
             "description": "sport/realtime_goes16_abi_fullDisk_band14_11p20um",
             "tags":     "sport",
             "group":    "overlays",
