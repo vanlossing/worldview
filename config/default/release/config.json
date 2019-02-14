@@ -1,39 +1,182 @@
 {
     "wv-options-fetch": [
         {
-            "from": "https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?request=GetCapabilities",
-            "to": "gibs-geographic.xml"
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg4326/all/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg4326-all.xml"
         },
         {
-            "from": "https://gibs.earthdata.nasa.gov/wmts/epsg3413/best/wmts.cgi?request=GetCapabilities",
-            "to": "gibs-arctic.xml"
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg4326/best/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg4326-best.xml"
         },
         {
-            "from": "https://gibs.earthdata.nasa.gov/wmts/epsg3031/best/wmts.cgi?request=GetCapabilities",
-            "to": "gibs-antarctic.xml"
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg4326/nrt/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg4326-nrt.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg4326/std/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg4326-std.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3413/all/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3413-all.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3413/best/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3413-best.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3413/nrt/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3413-nrt.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3413/std/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3413-std.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3031/all/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3031-all.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3031/best/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3031-best.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3031/nrt/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3031-nrt.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3031/std/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3031-std.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3857/all/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3857-all.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3857/best/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3857-best.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3857/nrt/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3857-nrt.xml"
+        },
+        {
+            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3857/std/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-epsg3857-std.xml"
         }
     ],
     "wv-options-wmts": [
         {
-            "source": "GIBS:geographic",
-            "from": "gibs-geographic.xml",
-            "to": "gibs-geographic.json",
+            "source": "GIBS:epsg4326:all",
+            "from": "gibs-epsg4326-all.xml",
+            "to": "gibs-epsg4326-all.json",
             "projection": "geographic",
             "maxResolution": 0.5625
         },
         {
-            "source": "GIBS:arctic",
-            "from": "gibs-arctic.xml",
-            "to": "gibs-arctic.json",
+            "source": "GIBS:epsg4326:best",
+            "from": "gibs-epsg4326-best.xml",
+            "to": "gibs-epsg4326-best.json",
+            "projection": "geographic",
+            "maxResolution": 0.5625
+        },
+        {
+            "source": "GIBS:epsg4326:nrt",
+            "from": "gibs-epsg4326-nrt.xml",
+            "to": "gibs-epsg4326-nrt.json",
+            "projection": "geographic",
+            "maxResolution": 0.5625
+        },
+        {
+            "source": "GIBS:epsg4326:std",
+            "from": "gibs-epsg4326-std.xml",
+            "to": "gibs-epsg4326-std.json",
+            "projection": "geographic",
+            "maxResolution": 0.5625
+        },
+        {
+            "source": "GIBS:epsg3413:all",
+            "from": "gibs-epsg3413-all.xml",
+            "to": "gibs-epsg3413-all.json",
             "projection": "arctic",
             "maxResolution": 8192.0
         },
         {
-            "source": "GIBS:antarctic",
-            "from": "gibs-antarctic.xml",
-            "to": "gibs-antarctic.json",
+            "source": "GIBS:epsg3413:best",
+            "from": "gibs-epsg3413-best.xml",
+            "to": "gibs-epsg3413-best.json",
+            "projection": "arctic",
+            "maxResolution": 8192.0
+        },
+        {
+            "source": "GIBS:epsg3413:nrt",
+            "from": "gibs-epsg3413-nrt.xml",
+            "to": "gibs-epsg3413-nrt.json",
+            "projection": "arctic",
+            "maxResolution": 8192.0
+        },
+        {
+            "source": "GIBS:epsg3413:std",
+            "from": "gibs-epsg3413-std.xml",
+            "to": "gibs-epsg3413-std.json",
+            "projection": "arctic",
+            "maxResolution": 8192.0
+        },
+        {
+            "source": "GIBS:epsg3031:all",
+            "from": "gibs-epsg3031-all.xml",
+            "to": "gibs-epsg3031-all.json",
             "projection": "antarctic",
             "maxResolution": 8192.0
+        },
+        {
+            "source": "GIBS:epsg3031:best",
+            "from": "gibs-epsg3031-best.xml",
+            "to": "gibs-epsg3031-best.json",
+            "projection": "antarctic",
+            "maxResolution": 8192.0
+        },
+        {
+            "source": "GIBS:epsg3031:nrt",
+            "from": "gibs-epsg3031-nrt.xml",
+            "to": "gibs-epsg3031-nrt.json",
+            "projection": "antarctic",
+            "maxResolution": 8192.0
+        },
+        {
+            "source": "GIBS:epsg3031:std",
+            "from": "gibs-epsg3031-std.xml",
+            "to": "gibs-epsg3031-std.json",
+            "projection": "antarctic",
+            "maxResolution": 8192.0
+        },
+        {
+            "source": "GIBS:epsg3857:all",
+            "from": "gibs-epsg3857-all.xml",
+            "to": "gibs-epsg3857-all.json",
+            "projection": "webmerc",
+            "maxResolution": 156543.03390625
+        },
+        {
+            "source": "GIBS:epsg3857:best",
+            "from": "gibs-epsg3857-best.xml",
+            "to": "gibs-epsg3857-best.json",
+            "projection": "webmerc",
+            "maxResolution": 156543.03390625
+        },
+        {
+            "source": "GIBS:epsg3857:nrt",
+            "from": "gibs-epsg3857-nrt.xml",
+            "to": "gibs-epsg3857-nrt.json",
+            "projection": "webmerc",
+            "maxResolution": 156543.03390625
+        },
+        {
+            "source": "GIBS:epsg3857:std",
+            "from": "gibs-epsg3857-std.xml",
+            "to": "gibs-epsg3857-std.json",
+            "projection": "webmerc",
+            "maxResolution": 156543.03390625
         }
     ]
 }
