@@ -503,9 +503,11 @@ export function timelineTicks(models, config, ui) {
     var sibElem = d3.select($(self.normal.lastElem)
       .next()[0]);
 
-    if (sibElem.classed('domain')) {
-      end = tl.zoom.current.ticks.boundary.last();
-      self.add(end, 'path.domain');
+    if (sibElem) {
+      if (sibElem.classed('domain')) {
+        end = tl.zoom.current.ticks.boundary.last();
+        self.add(end, 'path.domain');
+      }
     }
     // } End terrible
 
