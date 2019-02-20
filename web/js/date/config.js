@@ -1205,8 +1205,7 @@ export function timelineConfig(models, config, ui) {
             d.getUTCMonth(),
             d.getUTCDate(),
             d.getUTCHours(),
-            d.getUTCMinutes(),
-            19
+            d.getUTCMinutes()
           );
         };
 
@@ -1251,8 +1250,7 @@ export function timelineConfig(models, config, ui) {
             d.getUTCMonth(),
             d.getUTCDate(),
             d.getUTCHours(),
-            selected.getUTCMinutes(),
-            19
+            selected.getUTCMinutes()
           );
         };
 
@@ -1265,8 +1263,7 @@ export function timelineConfig(models, config, ui) {
               d.getUTCMonth(),
               d.getUTCDate(),
               d.getUTCHours(),
-              d.getUTCMinutes() + 5,
-              19
+              d.getUTCMinutes() + 5
             )
           );
         };
@@ -1280,8 +1277,7 @@ export function timelineConfig(models, config, ui) {
               d.getUTCMonth(),
               d.getUTCDate(),
               d.getUTCHours(),
-              d.getUTCMinutes(),
-              19
+              d.getUTCMinutes()
             )
           );
         };
@@ -1447,8 +1443,7 @@ export function timelineConfig(models, config, ui) {
             d.getUTCMonth(),
             d.getUTCDate(),
             d.getUTCHours(),
-            d.getUTCMinutes(),
-            37
+            d.getUTCMinutes()
           );
         };
 
@@ -1493,8 +1488,7 @@ export function timelineConfig(models, config, ui) {
             d.getUTCMonth(),
             d.getUTCDate(),
             d.getUTCHours(),
-            selected.getUTCMinutes(),
-            37
+            selected.getUTCMinutes()
           );
         };
 
@@ -1507,8 +1501,7 @@ export function timelineConfig(models, config, ui) {
               d.getUTCMonth(),
               d.getUTCDate(),
               d.getUTCHours(),
-              d.getUTCMinutes() + 15,
-              37
+              d.getUTCMinutes() + 15
             )
           );
         };
@@ -1522,8 +1515,7 @@ export function timelineConfig(models, config, ui) {
               d.getUTCMonth(),
               d.getUTCDate(),
               d.getUTCHours(),
-              d.getUTCMinutes(),
-              37
+              d.getUTCMinutes()
             )
           );
         };
