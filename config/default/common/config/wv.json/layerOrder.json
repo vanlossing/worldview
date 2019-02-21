@@ -1,5 +1,17 @@
 {
     "layerOrder": [
+        "MODIS_Aqua_Thermal_Anomalies_All_v6_NRT",
+        "MODIS_Aqua_Thermal_Anomalies_Day_v6_NRT",
+        "MODIS_Aqua_Thermal_Anomalies_Night_v6_NRT",
+        "MODIS_Combined_Thermal_Anomalies_All_v6_NRT",
+        "MODIS_Combined_Thermal_Anomalies_Day_v6_NRT",
+        "MODIS_Combined_Thermal_Anomalies_Night_v6_NRT",
+        "VIIRS_SNPP_Thermal_Anomalies_375m_All_v1_NRT",
+        "VIIRS_SNPP_Thermal_Anomalies_375m_Day_v1_NRT",
+        "VIIRS_SNPP_Thermal_Anomalies_375m_Night_v1_NRT",
+        "MODIS_Terra_Thermal_Anomalies_All_v6_NRT",
+        "MODIS_Terra_Thermal_Anomalies_Day_v6_NRT",
+        "MODIS_Terra_Thermal_Anomalies_Night_v6_NRT",
         "VIIRS_SNPP_CorrectedReflectance_TrueColor",
         "VIIRS_SNPP_CorrectedReflectance_BandsM3-I3-M11",
         "VIIRS_SNPP_CorrectedReflectance_BandsM11-I2-I1",
