@@ -23,7 +23,6 @@ import { lookupFactory } from '../ol/lookupimagetile';
 export function mapLayerBuilder(models, config, cache, mapUi) {
   var self = {};
   self.init = function(Parent) {
-    console.log(config);
     self.extentLayers = [];
     mapUi.events.on('selecting', hideWrap);
     mapUi.events.on('selectiondone', showWrap);
