@@ -138,9 +138,9 @@ export function palettesModel(models, config) {
       return 0;
     }
   };
+
   /**
    * Gets a single colormap (entries / legend combo)
-   *
    *
    * @method get
    * @static
@@ -157,9 +157,9 @@ export function palettesModel(models, config) {
     }
     return self.getRenderedPalette(layerId, index);
   };
+
   /**
    * Gets the legend of a colormap
-   *
    *
    * @method getLegend
    * @static
@@ -173,9 +173,9 @@ export function palettesModel(models, config) {
     var value = self.get(layerId, index, groupStr);
     return value.legend || value.entries;
   };
+
   /**
    * Gets the legend of a colormap
-   *
    *
    * @method getDefaultLegend
    * @static
