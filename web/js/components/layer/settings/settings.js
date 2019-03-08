@@ -12,6 +12,7 @@ import {
   NavLink
 } from 'reactstrap';
 
+import VectorStyles from './vector-styles';
 import Palette from './palette';
 import Opacity from './opacity';
 import Threshold from './threshold';
