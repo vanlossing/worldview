@@ -70,7 +70,6 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
       } else if (def.type === 'vector') {
         // Add vector layer style to config.rendered object
         var promises = [];
-        var layerName = def.layer || def.id;
 
         if (config.layers[def.id] && config.layers[def.id].vectorStyle) {
           promises.push(palettes.loadRenderedVectorStyle(config, def.id));
