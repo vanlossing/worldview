@@ -370,33 +370,35 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
         };
       };
 
+      var layerStyleId = 'MODIS_Fire_Points_Confidence';
+
       var featureStyles = function(feature, resolution) {
         var featureStyle, color, fill, stroke, image, text, label, labelFillColor, labelStrokeColor;
         var fillColor = 'rgba(255,255,255,0.4)';
         var strokeColor = '#3399CC';
         var width = 1.25;
         var radius = 5;
+        var styleGroupCount = 0;
+        var matchedStyles = [];
+        var matchedLineStyles = [];
 
         if (glStyle) {
           var layerStyles = glStyle.layers;
           // var styleGroup = Object.keys(layerStyles).map(e => layerStyles[e]);
-        }
-        var styleGroupCount = 0;
-        var matchedPropertyStyles = [];
-        var matchedLineStyles = [];
-
-        if (glStyle) {
           // Match JSON styles from GC to vector features and add styleValue to arrays
-          lodashEach(layerStyles, function(styleValues) {
-            let stylePropertyKey = styleValues['source-layer'];
-            if (stylePropertyKey in feature.properties_) matchedPropertyStyles.push(styleValues);
-            if (feature.type_ === 'LineString' && styleValues.type === 'Line') matchedLineStyles.push(styleValues);
+          lodashEach(layerStyles, function(layerStyle) {
+            let glStylePropertyId = layerStyle[layerStyleId];
+            if (glStylePropertyId) {
+              let glStyleSourceLayer = layerStyle['source-layer'];
+              if (glStyleSourceLayer in feature.properties_) matchedStyles.push(layerStyle);
+              if (feature.type_ === 'LineString' && layerStyle.type === 'Line') matchedLineStyles.push(layerStyle);
+            }
           });
         }
 
         // If there is NO matching source-layer in the glStyle and it is not a line style...
         // then set the default blue/white vector style.
-        if (lodashIsEmpty(matchedPropertyStyles) && lodashIsEmpty(matchedLineStyles)) {
+        if (lodashIsEmpty(matchedStyles) && lodashIsEmpty(matchedLineStyles)) {
           featureStyle = styleCache['default'];
 
           let defaultFill = new Fill({
@@ -421,20 +423,25 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
           }
         } else {
           // Style vector points
-          lodashEach(matchedPropertyStyles, function(matchedStyle) {
+          lodashEach(matchedStyles, function(matchedStyle) {
             styleGroupCount++;
-            let pointStyle = feature.get(matchedStyle.property) + '_' + styleGroupCount;
+            let pointStyle = feature.get(matchedStyle.layerStyleId) + '_' + styleGroupCount;
             if (pointStyle) {
               featureStyle = styleCache[pointStyle];
 
               // If there is a range, style properties based on ranges
               if (matchedStyle.type === 'circle' && matchedStyle.paint) {
-                if (matchedStyle.paint['circle-color']) var circleColor = matchedStyle.paint['circle-color'];
+                var circleColor;
+                if (matchedStyle.paint['circle-color']) {
+                  circleColor = matchedStyle.paint['circle-color'];
+                }
                 if (Array.isArray(circleColor)) {
                   // Figure out if it is an expression
                   // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-decision
                   // Check if first value is case for if/else/then logic
-                  if (circleColor[0] === 'case') {
+                  if (circleColor[0] === 'case' && circleColor.length >= 3) {
+
+                    if(arr.slice(-1)[0]
                     // Check each of the if/then/else statements and apply colors to each vector feature matching it
                   }
                 } else {
