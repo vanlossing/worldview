@@ -15,6 +15,7 @@ import lodashCloneDeep from 'lodash/cloneDeep';
 import lodashMerge from 'lodash/merge';
 import lodashEach from 'lodash/each';
 import { lookupFactory } from '../ol/lookupimagetile';
+import OlCluster from 'ol/source/Cluster';
 
 export function mapLayerBuilder(models, config, cache, mapUi) {
   var self = {};
@@ -341,11 +342,16 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
       })
     });
 
+    var clusterSource = new OlCluster({
+      distance: parseInt(20, 10),
+      source: sourceOptions
+    });
+
     var layer = new LayerVectorTile({
       renderMode: 'image',
       renderBuffer: '5',
       extent: extent,
-      source: sourceOptions
+      source: clusterSource
     });
 
     if (config.vectorStyles && def.vectorStyle.id) {
