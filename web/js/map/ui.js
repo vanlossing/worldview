@@ -30,6 +30,7 @@ import { mapPrecacheTile } from './precachetile';
 import { mapUtilZoomAction, getActiveLayerGroup } from './util';
 import { mapCompare } from './compare/compare';
 import Cache from 'cachai';
+import { applyStyle } from 'ol-mapbox-style';
 
 export function mapui(models, config) {
   var layerBuilder, createLayer;
@@ -103,6 +104,12 @@ export function mapui(models, config) {
       .on('update', updateLookup);
     $(window).on('resize', onResize);
     updateProjection(true);
+
+    $(document).ready(function() {
+      $(document).on('change', document.getElementById('frpCheckbox'), function(e) {
+        reloadLayers();
+      });
+    });
   };
   /*
    * Changes visual projection
@@ -263,6 +270,25 @@ export function mapui(models, config) {
       lodashEach(defs, function(def) {
         if (isGraticule(def)) {
           addGraticule(def.opacity, layerGroupStr);
+        } else if (def.type === 'vector') {
+          var vectorStyles = config.vectorStyles.rendered;
+          var vectorStyle = def.vectorStyle.id;
+          var glStyle = vectorStyles[vectorStyle];
+          let layer = createLayer(def);
+
+          if (document.getElementById('frpCheckbox').checked === true) {
+            applyStyle(layer, glStyle, 'MODIS_Fire_Points_FRP').then(function() {
+              map.addLayer(createLayer(def));
+            });
+          } else if (document.getElementById('confidenceCheckbox').checked === true) {
+            applyStyle(layer, glStyle, 'MODIS_Fire_Points_Confidence').then(function() {
+              map.addLayer(createLayer(def));
+            });
+          } else {
+            applyStyle(layer, glStyle, 'default_style').then(function() {
+              map.addLayer(createLayer(def));
+            });
+          }
         } else {
           map.addLayer(createLayer(def));
         }

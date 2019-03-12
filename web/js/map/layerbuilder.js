@@ -353,18 +353,7 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
       var vectorStyle = def.vectorStyle.id;
       var glStyle = vectorStyles[vectorStyle];
 
-      $(document).ready(function() {
-        $(document).on('change', document.getElementById('frpCheckbox'), function(e) {
-          if (document.getElementById('frpCheckbox').checked === true) {
-            applyStyle(layer, glStyle, 'MODIS_Fire_Points_FRP');
-          } else if (document.getElementById('confidenceCheckbox').checked === true) {
-            applyStyle(layer, glStyle, 'MODIS_Fire_Points_Confidence');
-          } else {
-            applyStyle(layer, glStyle, 'default_style');
-          }
-        });
-        applyStyle(layer, glStyle, 'default_style');
-      });
+      applyStyle(layer, glStyle, 'default_style');
     }
 
     return layer;
