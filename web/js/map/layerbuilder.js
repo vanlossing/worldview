@@ -350,9 +350,9 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
     });
 
     if (config.vectorStyles && def.vectorStyle.id) {
-      // var vectorStyles = config.vectorStyles.rendered;
-      // var vectorStyle = def.vectorStyle.id;
-      // var glStyle = vectorStyles[vectorStyle];
+      var vectorStyles = config.vectorStyles.rendered;
+      var vectorStyle = def.vectorStyle.id;
+      var glStyle = vectorStyles[vectorStyle];
 
       var scaleFeature = function (base, resolution) {
         // var zoom = map.getView()
@@ -377,23 +377,25 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
         var width = 1.25;
         var radius = 5;
 
-        if (config.vectorStyles.rendered[def.vectorStyle.id]) {
-          var layerStyles = config.vectorStyles.rendered[def.vectorStyle.id].styles;
-          var styleGroup = Object.keys(layerStyles).map(e => layerStyles[e]);
+        if (glStyle) {
+          var layerStyles = glStyle.layers;
+          // var styleGroup = Object.keys(layerStyles).map(e => layerStyles[e]);
         }
         var styleGroupCount = 0;
         var matchedPropertyStyles = [];
         var matchedLineStyles = [];
 
-        if (config.vectorStyles.rendered[def.vectorStyle.id]) {
+        if (glStyle) {
           // Match JSON styles from GC to vector features and add styleValue to arrays
-          lodashEach(styleGroup, function(styleValues) {
-            let stylePropertyKey = styleValues.property;
+          lodashEach(layerStyles, function(styleValues) {
+            let stylePropertyKey = styleValues['source-layer'];
             if (stylePropertyKey in feature.properties_) matchedPropertyStyles.push(styleValues);
-            if (feature.type_ === 'LineString' && styleValues.lines) matchedLineStyles.push(styleValues);
+            if (feature.type_ === 'LineString' && styleValues.type === 'Line') matchedLineStyles.push(styleValues);
           });
         }
 
+        // If there is NO matching source-layer in the glStyle and it is not a line style...
+        // then set the default blue/white vector style.
         if (lodashIsEmpty(matchedPropertyStyles) && lodashIsEmpty(matchedLineStyles)) {
           featureStyle = styleCache['default'];
 
