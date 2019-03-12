@@ -428,29 +428,42 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
               featureStyle = styleCache[pointStyle];
 
               // If there is a range, style properties based on ranges
-              if (matchedStyle.range) {
-                let ranges = matchedStyle.range.split(',');
-                let lowRange = ranges[ranges.length - 2].substring(1).trim();
-                let highRange = ranges[ranges.length - 1].slice(0, -1).trim();
-                if (matchedStyle.range.startsWith('[') && matchedStyle.range.endsWith(']')) { // greater than or equal to + less than or equal to
-                  if (feature.properties_[matchedStyle.property] >= lowRange && feature.properties_[matchedStyle.property] <= highRange) {
-                    color = matchedStyle.points.color;
-                  }
-                } else if (matchedStyle.range.startsWith('[') && matchedStyle.range.endsWith(')')) { // greater than or equal to + less than
-                  if (feature.properties_[matchedStyle.property] >= lowRange && feature.properties_[matchedStyle.property] < highRange) {
-                    color = matchedStyle.points.color;
-                  }
-                } else if (matchedStyle.range.startsWith('(') && matchedStyle.range.endsWith(']')) { // greater than + less than or equal to
-                  if (feature.properties_[matchedStyle.property] > lowRange && feature.properties_[matchedStyle.property] <= highRange) {
-                    color = matchedStyle.points.color;
-                  }
-                } else if (matchedStyle.range.startsWith('(') && matchedStyle.range.endsWith(')')) { // greater than + less than
-                  if (feature.properties_[matchedStyle.property] > lowRange && feature.properties_[matchedStyle.property] < highRange) {
-                    color = matchedStyle.points.color;
+              if (matchedStyle.type === 'circle' && matchedStyle.paint) {
+                if (matchedStyle.paint['circle-color']) var circleColor = matchedStyle.paint['circle-color'];
+                if (Array.isArray(circleColor)) {
+                  // Figure out if it is an expression
+                  // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-decision
+                  // Check if first value is case for if/else/then logic
+                  if (circleColor[0] === 'case') {
+                    // Check each of the if/then/else statements and apply colors to each vector feature matching it
                   }
                 } else {
-                  color = matchedStyle.points.color;
+                  // Else, figure out if it is just a value
+                  color = circleColor;
                 }
+
+                // let ranges = matchedStyle.range.split(',');
+                // let lowRange = ranges[ranges.length - 2].substring(1).trim();
+                // let highRange = ranges[ranges.length - 1].slice(0, -1).trim();
+                // if (matchedStyle.range.startsWith('[') && matchedStyle.range.endsWith(']')) { // greater than or equal to + less than or equal to
+                //   if (feature.properties_[matchedStyle.property] >= lowRange && feature.properties_[matchedStyle.property] <= highRange) {
+                //     color = matchedStyle.points.color;
+                //   }
+                // } else if (matchedStyle.range.startsWith('[') && matchedStyle.range.endsWith(')')) { // greater than or equal to + less than
+                //   if (feature.properties_[matchedStyle.property] >= lowRange && feature.properties_[matchedStyle.property] < highRange) {
+                //     color = matchedStyle.points.color;
+                //   }
+                // } else if (matchedStyle.range.startsWith('(') && matchedStyle.range.endsWith(']')) { // greater than + less than or equal to
+                //   if (feature.properties_[matchedStyle.property] > lowRange && feature.properties_[matchedStyle.property] <= highRange) {
+                //     color = matchedStyle.points.color;
+                //   }
+                // } else if (matchedStyle.range.startsWith('(') && matchedStyle.range.endsWith(')')) { // greater than + less than
+                //   if (feature.properties_[matchedStyle.property] > lowRange && feature.properties_[matchedStyle.property] < highRange) {
+                //     color = matchedStyle.points.color;
+                //   }
+                // } else {
+                //   color = matchedStyle.points.color;
+                // }
               //  If there is a regexp and time property, style time vector points
               } else if (feature.properties_.time && matchedStyle.property === 'time' && matchedStyle.regex) {
                 let time = feature.properties_.time;
