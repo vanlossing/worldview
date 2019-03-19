@@ -10,7 +10,7 @@ import MVT from 'ol/format/MVT';
 import LayerVectorTile from 'ol/layer/VectorTile';
 import SourceVectorTile from 'ol/source/VectorTile';
 import { applyStyle } from 'ol-mapbox-style';
-// import stylefunction from 'ol-mapbox-style/stylefunction';
+import stylefunction from 'ol-mapbox-style/stylefunction';
 import lodashCloneDeep from 'lodash/cloneDeep';
 import lodashMerge from 'lodash/merge';
 import lodashEach from 'lodash/each';
@@ -343,9 +343,10 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
 
     var layer = new LayerVectorTile({
       renderMode: 'image',
-      renderBuffer: '5',
+      renderBuffer: '100',
       extent: extent,
-      source: sourceOptions
+      source: sourceOptions,
+      declutter: true
     });
 
     if (config.vectorStyles && def.vectorStyle.id) {
@@ -356,14 +357,14 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
       $(document).ready(function() {
         $(document).on('change', document.getElementById('frpCheckbox'), function(e) {
           if (document.getElementById('frpCheckbox').checked === true) {
-            applyStyle(layer, glStyle, 'MODIS_Fire_Points_FRP');
+            applyStyle(layer, glStyle, 'MODIS_Fire_Points_FRP', matrixSet.resolutions);
           } else if (document.getElementById('confidenceCheckbox').checked === true) {
-            applyStyle(layer, glStyle, 'MODIS_Fire_Points_Confidence');
+            applyStyle(layer, glStyle, 'MODIS_Fire_Points_Confidence', matrixSet.resolutions);
           } else {
-            applyStyle(layer, glStyle, 'default_style');
+            applyStyle(layer, glStyle, 'default_style', matrixSet.resolutions);
           }
         });
-        applyStyle(layer, glStyle, 'default_style');
+        applyStyle(layer, glStyle, 'default_style', matrixSet.resolutions);
       });
     }
 
