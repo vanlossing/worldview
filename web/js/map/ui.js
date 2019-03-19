@@ -30,7 +30,7 @@ import { mapPrecacheTile } from './precachetile';
 import { mapUtilZoomAction, getActiveLayerGroup } from './util';
 import { mapCompare } from './compare/compare';
 import Cache from 'cachai';
-import { applyStyle } from 'ol-mapbox-style';
+// import { applyStyle } from 'ol-mapbox-style';
 
 export function mapui(models, config) {
   var layerBuilder, createLayer;
@@ -102,12 +102,6 @@ export function mapui(models, config) {
       .on('update', updateLookup);
     $(window).on('resize', onResize);
     updateProjection(true);
-
-    $(document).ready(function() {
-      $(document).on('change', document.getElementById('frpCheckbox'), function(e) {
-        reloadLayers();
-      });
-    });
   };
   /*
    * Changes visual projection
