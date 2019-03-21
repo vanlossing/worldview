@@ -372,7 +372,7 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
       renderBuffer: 5,
       extent: extent,
       source: sourceOptions,
-      declutter: true,
+      declutter: false,
       style: styles
     });
 
@@ -385,7 +385,7 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
       const styleFunction = stylefunction(layer, glStyle, 'default_style');
       // console.log(styleFunction);
       layer.setStyle(function(feature, resolution) {
-        if (feature.get('CONFIDENCE') > '95') {
+        if (feature.get('CONFIDENCE') > '0') {
           // console.log('yes')
           return styleFunction(feature, resolution);
         } else {
