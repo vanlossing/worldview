@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import palettes from '../palettes/palettes';
+import styles from '../styles/styles';
 import { palettesTranslate, getCheckerboard } from '../palettes/util';
 import LayerSettings from '../components/layer/settings/settings';
 import Promise from 'bluebird';
@@ -17,7 +17,7 @@ export function layersOptions(models, ui, config) {
     checkerboard = getCheckerboard();
 
     if (config.features.customPalettes) {
-      palettes.loadCustom(config).done(loaded);
+      styles.loadCustom(config).done(loaded);
     } else {
       loaded();
     }

@@ -1,19 +1,19 @@
 import jQuery from 'jquery';
-import palettes from './palettes';
+import styles from './styles';
 import fixtures from '../fixtures';
 
 var unmocked = {};
 
 beforeAll(() => {
   unmocked.getJSON = jQuery.getJSON;
-  unmocked.supported = palettes.supported;
+  unmocked.supported = styles.supported;
 });
 
-beforeEach(() => { palettes.supported = true; });
+beforeEach(() => { styles.supported = true; });
 
 afterEach(() => {
   jQuery.getJSON = unmocked.getJSON;
-  palettes.supported = unmocked.supported;
+  styles.supported = unmocked.supported;
 });
 
 function testData() {

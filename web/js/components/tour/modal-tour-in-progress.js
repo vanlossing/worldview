@@ -12,7 +12,7 @@ import {
 } from '../../layers/layers';
 import { mapParser } from '../../map/map';
 import { parse as animationParser } from '../../animation/anim';
-import palettes from '../../palettes/palettes';
+import styles from '../../styles/styles';
 import { dataParser } from '../../data/data';
 import { parse as projectionParser } from '../../projection/projection';
 import googleTagManager from 'googleTagManager';
@@ -168,7 +168,7 @@ class ModalInProgress extends React.Component {
       layerParser,
       dateParser,
       mapParser,
-      palettes.parse
+      styles.parse
     ];
     if (config.features.dataDownload) {
       currentStateParsers.push(dataParser);
@@ -186,7 +186,7 @@ class ModalInProgress extends React.Component {
       layerParser,
       dateParser,
       mapParser,
-      palettes.parse
+      styles.parse
     ];
     if (config.features.dataDownload) {
       prevStateParsers.push(dataParser);
@@ -230,7 +230,7 @@ class ModalInProgress extends React.Component {
       });
     }
 
-    requirements = palettes.requirements(currentState, config);
+    requirements = styles.requirements(currentState, config);
 
     // Load the step link after the palettes & defaults loaded
     Promise.all([requirements])
