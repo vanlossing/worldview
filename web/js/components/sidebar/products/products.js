@@ -32,7 +32,6 @@ class Products extends React.Component {
 }
 Products.propTypes = {
   activeOverlays: PropTypes.object,
-  palettePromise: PropTypes.func,
   isActive: PropTypes.bool,
   layerGroupName: PropTypes.string,
   height: PropTypes.number

@@ -16,6 +16,7 @@ class LayerList extends React.Component {
     super(props);
     this.state = {
       palettes: {},
+      vectorStyles: {},
       layers: props.layers
     };
     this.promises = {};
@@ -26,6 +27,7 @@ class LayerList extends React.Component {
       this.setState({ layers: props.layers });
     }
   }
+
   /**
    * Get Palette and setState with promise results when palette is retrieved
    * @param {Object} layer | Layer
@@ -50,6 +52,32 @@ class LayerList extends React.Component {
     }
     return null;
   }
+
+  /**
+   * Get vectorStyle and setState with promise results when vectorStyle is retrieved
+   * @param {Object} layer | Layer
+   * @param {Function} vectorStylePromise | Retrieve vectorStyle
+   */
+  getVectorStyle(layer, vectorStylePromise) {
+    if (this.state.vectorStyles[layer.id]) {
+      return this.state.vectorStyles[layer.id];
+    } else if (this.promises[layer.id]) {
+      return null;
+    } else if (layer.vectorStyle) {
+      this.promises[layer.id] = true;
+      let promise = vectorStylePromise(layer.id);
+      promise.then(vectorStyle => {
+        var vectorStyles = this.state.vectorStyles;
+        delete this.promises[layer.id];
+        vectorStyles[layer.id] = vectorStyle;
+        this.setState({
+          vectorStyles: vectorStyles
+        });
+      });
+    }
+    return null;
+  }
+
   /**
    * Update Layer order after drag
    * @param {Function} replaceSubGroup | Replace a products subgroup (Baselayer or Overlay) with new order
@@ -127,6 +155,11 @@ class LayerList extends React.Component {
                           palette={this.getPalette(
                             object,
                             context.palettePromise
+                          )}
+                          getVectorStyle={context.getVectorStyle}
+                          vectorStyle={this.getVectorStyle(
+                            object,
+                            context.vectorStylePromise
                           )}
                           isDisabled={
                             !context.getAvailability(

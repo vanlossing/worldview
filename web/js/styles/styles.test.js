@@ -1,17 +1,17 @@
 import fixtures from '../fixtures';
 import { parse as layersParse } from '../layers/layers';
-import palettes from './palettes';
+import styles from './styles';
 
 var unmocked = {};
 
 beforeAll(() => {
-  unmocked.supported = palettes.supported;
+  unmocked.supported = styles.supported;
 });
 
-beforeEach(() => { palettes.supported = true; });
+beforeEach(() => { styles.supported = true; });
 
 afterEach(() => {
-  palettes.supported = unmocked.supported;
+  styles.supported = unmocked.supported;
 });
 
 function testData() {
@@ -44,7 +44,7 @@ describe('permalink 1.1', () => {
       palettes: 'terra-aod,blue-1'
     };
     layersParse(state, errors, config);
-    palettes.parse(state, errors, config);
+    styles.parse(state, errors, config);
     var attr = state.l[0].attributes[0];
 
     expect(attr.id).toBe('palette');
@@ -60,7 +60,7 @@ describe('permalink 1.1', () => {
       palettes: 'terra-aod,blue-1~aqua-aod,red-1'
     };
     layersParse(state, errors, config);
-    palettes.parse(state, errors, config);
+    styles.parse(state, errors, config);
 
     let attr1 = state.l[0].attributes[0];
     expect(attr1.id).toBe('palette');
@@ -81,7 +81,7 @@ describe('permalink 1.1', () => {
       palettes: 'aqua-aod,red-1'
     };
     layersParse(state, errors, config);
-    palettes.parse(state, errors, config);
+    styles.parse(state, errors, config);
     expect(errors).toHaveLength(1);
   });
 });

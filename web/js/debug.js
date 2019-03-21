@@ -3,7 +3,7 @@ import lodashIsNaN from 'lodash/isNaN';
 import lodashParseInt from 'lodash/parseInt';
 import lodashSortBy from 'lodash/sortBy';
 import util from './util/util';
-import palettes from './palettes/palettes';
+import styles from './styles/styles';
 
 export var debug = (function() {
   var parameters = util.fromQueryString(location.search);
@@ -133,7 +133,7 @@ export function debugLayers(ui, models, config) {
     }
     if (useDebugPanel[type]) {
       if (type === 'palettes') {
-        palettes.loadCustom(config).done(render);
+        styles.loadCustom(config).done(render);
       } else {
         render();
       }
@@ -245,7 +245,7 @@ export function debugLayers(ui, models, config) {
     }
     selectedLayer = layerId;
     if (type === 'palettes') {
-      palettes.loadRenderedPalette(config, layerId).done(function() {
+      styles.loadRenderedPalette(config, layerId).done(function() {
         var layer = config.layers[layerId];
         var palette = config.palettes.rendered[layerId];
         if (layer.palette.recommended) {

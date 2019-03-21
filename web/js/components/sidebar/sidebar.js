@@ -183,6 +183,7 @@ class Sidebar extends React.Component {
     const {
       onTabClick,
       palettePromise,
+      vectorStylePromise,
       updateLayer,
       getNames,
       getAvailability,
@@ -197,13 +198,16 @@ class Sidebar extends React.Component {
       checkerBoardPattern,
       compareFeature,
       tabTypes,
-      getPalette
+      getPalette,
+      getVectorStyle
     } = this.props;
     const wheelCallBack = util.browser.chrome ? util.preventPinch : null;
     return (
       <Provider
         palettePromise={palettePromise}
         getPalette={getPalette}
+        vectorStylePromise={vectorStylePromise}
+        getVectorStyle={getVectorStyle}
         updateLayer={updateLayer}
         getNames={getNames}
         getAvailability={getAvailability}
@@ -336,6 +340,8 @@ Sidebar.propTypes = {
   changeCompareMode: PropTypes.func,
   palettePromise: PropTypes.func,
   getPalette: PropTypes.func,
+  vectorStylePromise: PropTypes.func,
+  getVectorStyle: PropTypes.func,
   localStorage: PropTypes.bool,
   getLegend: PropTypes.func,
   zotsObject: PropTypes.object,
