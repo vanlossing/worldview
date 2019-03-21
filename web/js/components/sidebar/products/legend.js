@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import util from '../../../util/util';
-import { drawPaletteOnCanvas } from '../../../palettes/util';
+import { drawPaletteOnCanvas } from '../../../styles/util';
 import lodashIsEqual from 'lodash/isEqual';
 import lodashIsNumber from 'lodash/isNumber';
 

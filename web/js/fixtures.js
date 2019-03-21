@@ -4,7 +4,7 @@ import { register } from 'ol/proj/proj4';
 import { dateModel } from './date/model';
 import { layersModel } from './layers/model';
 import { mapModel } from './map/model';
-import { palettesModel } from './palettes/model';
+import { palettesModel } from './styles/rasterPalettes/model';
 import { projectionModel } from './projection/model';
 import { compareModel } from './compare/model';
 
