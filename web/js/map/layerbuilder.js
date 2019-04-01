@@ -274,12 +274,11 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
    * @returns {object} OpenLayers Vector layer
    */
   var createLayerVector = function(def, options, day) {
-    var date, urlParameters, proj, extent, source, matrixSet, matrixIds, start, declutterBool;
+    var date, urlParameters, proj, extent, source, matrixSet, matrixIds, start;
     proj = models.proj.selected;
     source = config.sources[def.source];
     extent = proj.maxExtent;
     start = [proj.maxExtent[0], proj.maxExtent[3]];
-    declutterBool = false;
 
     if (!source) {
       throw new Error(def.id + ': Invalid source: ' + def.source);
@@ -373,7 +372,7 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
       renderBuffer: 2,
       extent: extent,
       source: sourceOptions,
-      declutter: declutterBool,
+      declutter: false,
       style: styles
     });
 
@@ -436,7 +435,6 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
           document.getElementById('confidenceMaxFilterLabel').innerHTML = confidenceMaxFilter.value;
 
           if (document.getElementById('declutterCheckbox').checked === true) {
-            console.log(layer);
             layer.declutter = true;
           } else {
             layer.declutter = false;
