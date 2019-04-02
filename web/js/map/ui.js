@@ -842,8 +842,9 @@ export function mapui(models, config) {
         var feats = feature.getProperties();
         attsCollector.push(feats);
         if (layer.wv.def.vectorData && layer.wv.def.vectorData.id) {
+          let vectorDataId = layer.wv.def.vectorData.id;
           // var errorMessage = '<p>There was an error loading vector metadata.</p>';
-          var data = 'config/vectordata/' + layer.wv.def.vectorData.id + '.json';
+          var data = config.vectorData[vectorDataId];
           console.log(data);
         }
       });
