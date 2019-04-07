@@ -1,13 +1,13 @@
 {
     "sources": {
         "GIBS:arctic": {
-            "url": "http://uat.gibs.earthdata.nasa.gov/wmts/epsg3413/std/wmts.cgi"
+            "url": "http://uat.gibs.earthdata.nasa.gov/wmts/epsg3413/nrt/wmts.cgi"
         },
         "GIBS:antarctic": {
-            "url": "http://uat.gibs.earthdata.nasa.gov/wmts/epsg3031/std/wmts.cgi"
+            "url": "http://uat.gibs.earthdata.nasa.gov/wmts/epsg3031/nrt/wmts.cgi"
         },
         "GIBS:geographic": {
-            "url": "http://uat.gibs.earthdata.nasa.gov/wmts/epsg4326/std/wmts.cgi"
+            "url": "http://uat.gibs.earthdata.nasa.gov/wmts/epsg4326/nrt/wmts.cgi"
         },
         "GIBS:wms": {
             "url": "http://uat.gibs.earthdata.nasa.gov/wms/wms.php"

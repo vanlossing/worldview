@@ -129,7 +129,10 @@
 
 #wv-animation-widget .wv-date-selector-widget .input-wrapper-day,
 #wv-animation-widget .wv-date-selector-widget .input-wrapper-hour,
-#wv-animation-widget .wv-date-selector-widget .input-wrapper-minute {
+#wv-animation-widget .wv-date-selector-widget .input-wrapper-minute,
+#wv-animation-widget .wv-date-selector-widget .input-wrapper-10-minute,
+#wv-animation-widget .wv-date-selector-widget .input-wrapper-5-minute,
+#wv-animation-widget .wv-date-selector-widget .input-wrapper-15-minute {
   max-width: 25px;
 }
 

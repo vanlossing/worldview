@@ -141,9 +141,9 @@ class DateInputColumn extends React.Component {
   onClickDown() {
     if (this.props.type === '10-minute') {
       this.rollDate(-10);
-    } if (this.props.type === '5-minute') {
+    } else if (this.props.type === '5-minute') {
       this.rollDate(-5);
-    } if (this.props.type === '15-minute') {
+    } else if (this.props.type === '15-minute') {
       this.rollDate(-15);
     } else {
       this.rollDate(-1);

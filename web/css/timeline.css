@@ -163,6 +163,9 @@ g.plot rect.data-bar-invisible {
 #timeline-header.subdaily .input-wrapper-hour,
 #timeline-header.subdaily .input-time-divider,
 #timeline-header.subdaily .input-wrapper-minute,
+#timeline-header.subdaily .input-wrapper-10-minute,
+#timeline-header.subdaily .input-wrapper-5-minute,
+#timeline-header.subdaily .input-wrapper-15-minute,
 #timeline-header.subdaily .input-time-zmark {
   display: inline-block;
 }
@@ -189,7 +192,10 @@ g.plot rect.data-bar-invisible {
 }
 
 #timeline-header .input-wrapper-hour,
-#timeline-header .input-wrapper-minute {
+#timeline-header .input-wrapper-minute,
+#timeline-header .input-wrapper-10-minute,
+#timeline-header .input-wrapper-5-minute,
+#timeline-header .input-wrapper-15-minute {
   width: 32px;
 }
 

@@ -560,11 +560,35 @@ export default (function (self) {
   self.rollRange = function (date, interval, minDate, maxDate) {
     var year = date.getUTCFullYear();
     var month = date.getUTCMonth();
-    var first, last;
+    var first, last, firstMinute, lastMinute;
     switch (interval) {
       case 'minute':
-        var firstMinute = new Date(Date.UTC(year, month, 1, 0, 0));
-        var lastMinute = new Date(Date.UTC(year, month, self.daysInMonth(date), 23, 59));
+        firstMinute = new Date(Date.UTC(year, month, 1, 0, 0));
+        lastMinute = new Date(Date.UTC(year, month, self.daysInMonth(date), 23, 59));
+        first = new Date(Math.max(firstMinute, minDate))
+          .getUTCMinutes();
+        last = new Date(Math.min(lastMinute, maxDate))
+          .getUTCMinutes();
+        break;
+      case '10-minute':
+        firstMinute = new Date(Date.UTC(year, month, 1, 0, 0));
+        lastMinute = new Date(Date.UTC(year, month, self.daysInMonth(date), 23, 59));
+        first = new Date(Math.max(firstMinute, minDate))
+          .getUTCMinutes();
+        last = new Date(Math.min(lastMinute, maxDate))
+          .getUTCMinutes();
+        break;
+      case '5-minute':
+        firstMinute = new Date(Date.UTC(year, month, 1, 0, 0));
+        lastMinute = new Date(Date.UTC(year, month, self.daysInMonth(date), 23, 59));
+        first = new Date(Math.max(firstMinute, minDate))
+          .getUTCMinutes();
+        last = new Date(Math.min(lastMinute, maxDate))
+          .getUTCMinutes();
+        break;
+      case '15-minute':
+        firstMinute = new Date(Date.UTC(year, month, 1, 0, 0));
+        lastMinute = new Date(Date.UTC(year, month, self.daysInMonth(date), 23, 59));
         first = new Date(Math.max(firstMinute, minDate))
           .getUTCMinutes();
         last = new Date(Math.min(lastMinute, maxDate))
@@ -624,6 +648,15 @@ export default (function (self) {
     switch (interval) {
       // TODO: change minute and hour hard-coded min & max to be dynamic
       case 'minute':
+        minute = self.roll(minute + amount, 0, 59);
+        break;
+      case '10-minute':
+        minute = self.roll(minute + amount, 0, 59);
+        break;
+      case '5-minute':
+        minute = self.roll(minute + amount, 0, 59);
+        break;
+      case '15-minute':
         minute = self.roll(minute + amount, 0, 59);
         break;
       case 'hour':

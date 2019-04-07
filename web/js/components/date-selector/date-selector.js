@@ -21,7 +21,8 @@ class DateSelector extends React.Component {
       maxDate: props.maxDate,
       minDate: props.minDate,
       tab: null,
-      maxZoom: props.maxZoom
+      maxZoom: props.maxZoom,
+      selectedZoom: props.selectedZoom
     };
   }
   componentWillReceiveProps(props) {
@@ -29,7 +30,8 @@ class DateSelector extends React.Component {
       date: props.date,
       maxDate: props.maxDate,
       minDate: props.minDate,
-      maxZoom: props.maxZoom
+      maxZoom: props.maxZoom,
+      selectedZoom: props.selectedZoom
     });
   }
   blur() {
@@ -69,6 +71,21 @@ class DateSelector extends React.Component {
   }
   renderSubdaily() {
     if (this.state.maxZoom >= 4) {
+      var minType;
+      var minStep;
+      if (this.state.selectedZoom === 4) {
+        minType = '10-minute';
+        minStep = 10;
+      } else if (this.state.selectedZoom === 5) {
+        minType = '5-minute';
+        minStep = 5;
+      } else if (this.state.selectedZoom === 6) {
+        minType = '15-minute';
+        minStep = 15;
+      } else {
+        minType = '10-minute';
+        minStep = 10;
+      }
       return (
         <React.Fragment>
           <DateInputColumn
@@ -77,6 +94,7 @@ class DateSelector extends React.Component {
             today={new Date()}
             date={this.state.date}
             type="hour"
+            selectedZoom={this.state.selectedZoom}
             inputId={this.props.idSuffix ? 'hour-' + this.props.idSuffix : ''}
             height={this.props.height}
             width={this.props.width}
@@ -93,11 +111,12 @@ class DateSelector extends React.Component {
           />
           <div className="input-time-divider">:</div>
           <DateInputColumn
-            step={10}
+            step={minStep}
             startDate={new Date(2000)}
             today={new Date()}
             date={this.state.date}
-            type="minute"
+            type={minType}
+            selectedZoom={this.state.selectedZoom}
             height={this.props.height}
             width={this.props.width}
             updateDate={this.updateDate.bind(this)}
@@ -193,6 +212,7 @@ DateSelector.propTypes = {
   maxDate: PropTypes.object,
   minDate: PropTypes.object,
   maxZoom: PropTypes.number,
+  selectedZoom: PropTypes.number,
   onDateChange: PropTypes.func,
   id: PropTypes.string,
   height: PropTypes.string,

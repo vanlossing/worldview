@@ -168,11 +168,13 @@ export function timelineInput(models, config, ui) {
     self.update();
   };
   var getProps = function() {
+    console.log(models.date);
     var model = models.date;
     var min = model.minDate();
     var max = model.maxDate();
     var date = model[model.activeDate];
     var maxZoom = model.maxZoom;
+    var selectedZoom = model.selectedZoom;
     if (model.maxZoom >= 4 || config.parameters.showSubdaily) {
       document.getElementById('timeline-header').classList.add('subdaily');
       maxZoom = 6;
@@ -186,6 +188,7 @@ export function timelineInput(models, config, ui) {
       minDate: min,
       maxDate: max,
       maxZoom: maxZoom,
+      selectedZoom: selectedZoom,
       onDateChange: onDateSelect,
       date: date,
       fontSize: null
@@ -241,7 +244,6 @@ export function timelineInput(models, config, ui) {
    */
   var getNextTimeSelection = function(delta, increment) {
     var prevDate = model.selected;
-
     switch (increment) {
       case 'year':
         return new Date(
@@ -264,13 +266,13 @@ export function timelineInput(models, config, ui) {
       case '10-minute':
         return new Date(
           new Date(model.selected).setUTCMinutes(
-            model.selected.getUTCMinutes() + increment
+            model.selected.getUTCMinutes() + delta
           )
         );
       case '5-minute':
         return new Date(
           new Date(model.selected).setUTCMinutes(
-            model.selected.getUTCMinutes() + increment
+            model.selected.getUTCMinutes() + delta
           )
         );
       case '15-minute':
