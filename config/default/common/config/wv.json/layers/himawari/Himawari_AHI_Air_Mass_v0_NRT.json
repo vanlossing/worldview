@@ -10,7 +10,8 @@
           "layergroup": [
             "Himawari"
           ],
-          "inactive": true
+          "inactive": true,
+          "period": "subdaily"
       }
   }
 }
