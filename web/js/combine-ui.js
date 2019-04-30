@@ -37,6 +37,8 @@ import { animationGif } from './animation/gif';
 import naturalEventsUI from './natural-events/ui';
 import naturalEventsRequest from './natural-events/request';
 import { debugLayers } from './debug';
+// Vector Metadata UI
+import { vectorMetaUi } from './vector-metadata/ui';
 
 /**
  *  Legacy UI Rendering
@@ -134,6 +136,7 @@ export function combineUi(models, config, MapMouseEvents) {
     // FIXME: This is a hack
     models.map.events.on('projection', models.data.updateProjection);
   }
+  ui.vectorMeta = vectorMetaUi(models, ui, config);
   registerMapMouseHandlers(ui.map.proj, MapMouseEvents);
   // Sink all focus on inputs if click unhandled
   $(document).click(function(event) {

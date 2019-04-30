@@ -22,7 +22,7 @@ import Brand from './brand';
 import { combineModels } from './combine-models';
 import { parse } from './parse';
 import { combineUi } from './combine-ui';
-import palettes from './palettes/palettes';
+import styles from './styles/styles';
 import { updateLegacyModule } from './modules/migration/actions';
 import { validate as layerValidate } from './layers/layers';
 import { polyfill } from './polyfill';
@@ -52,7 +52,7 @@ window.onload = () => {
       elapsed('Config loaded', startTime, parameters);
       let legacyState = parse(parameters, config, errors);
       layerValidate(errors, config);
-      let requirements = [palettes.requirements(legacyState, config, true)];
+      let requirements = [styles.requirements(legacyState, config, true)];
       $.when
         .apply(null, requirements)
         .then(() => util.wrap(render(config, parameters, legacyState))); // Wrap render up

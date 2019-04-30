@@ -4,7 +4,7 @@ import { parse as dateParser } from './date/date';
 import { parse as projectionParser } from './projection/projection';
 import { parse as layerParser } from './layers/layers';
 import { parse as animationParser } from './animation/anim';
-import palettes from './palettes/palettes';
+import styles from './styles/styles';
 import { dataParser } from './data/data';
 
 export function parse(parameters, config, errors) {
@@ -14,7 +14,7 @@ export function parse(parameters, config, errors) {
     layerParser,
     dateParser,
     mapParser,
-    palettes.parse
+    styles.parse
   ];
   if (config.features.dataDownload) {
     parsers.push(dataParser);
