@@ -4,7 +4,8 @@ import { layersModel } from './layers/model';
 
 import { mapModel } from './map/model';
 import { animationModel } from './animation/model';
-import { palettesModel } from './palettes/model';
+import { palettesModel } from './styles/rasterPalettes/model';
+import { vectorStylesModel } from './styles/vectorStyles/model';
 import { dataModel } from './data/model';
 import { projectionModel } from './projection/model';
 import { compareModel } from './compare/model';
@@ -32,6 +33,7 @@ export function combineModels(config) {
   }
   models.proj = projectionModel(config);
   models.palettes = palettesModel(models, config);
+  models.vectorStyles = vectorStylesModel(models, config);
   models.layers = layersModel(models, config);
   models.date = dateModel(models, config, {
     initial: initialDate
