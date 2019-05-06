@@ -116,7 +116,7 @@ class LayerRow extends React.Component {
             />
           );
         }
-      } else if (layer.title.indexOf('Orbital Track') !== -1) {
+      } else if (layer.title && layer.title.indexOf('Orbital Track') !== -1) {
         // The following complex if statement is a placeholder
         // for truncating the layer names, until the rest of
         // the interface is implemented
