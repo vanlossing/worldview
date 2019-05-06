@@ -9,16 +9,10 @@ import OlTileGridTileGrid from 'ol/tilegrid/TileGrid';
 import MVT from 'ol/format/MVT';
 import LayerVectorTile from 'ol/layer/VectorTile';
 import SourceVectorTile from 'ol/source/VectorTile';
-// import { applyStyle } from 'ol-mapbox-style';
-import stylefunction from 'ol-mapbox-style/stylefunction';
 import lodashCloneDeep from 'lodash/cloneDeep';
 import lodashMerge from 'lodash/merge';
 import lodashEach from 'lodash/each';
 import { lookupFactory } from '../ol/lookupimagetile';
-// import OlCluster from 'ol/source/Cluster';
-import { Circle as CircleStyle, Fill, Style } from 'ol/style';
-// import olms from 'ol-mapbox-style';
-// import Feature from 'ol/Feature';
 
 export function mapLayerBuilder(models, config, cache, mapUi) {
   var self = {};
@@ -329,12 +323,7 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
 
     var sourceOptions = new SourceVectorTile({
       url: source.url + urlParameters,
-      cacheSize: 8192,
-      layer: layerName,
-      crossOrigin: 'anonymous',
       format: new MVT(),
-      overlaps: false,
-      wrapX: false,
       tileGrid: new OlTileGridTileGrid({
         extent: extent,
         origin: start,
@@ -343,105 +332,10 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
       })
     });
 
-    // var clusterSource = new OlCluster({
-    //   distance: parseInt(20, 10),
-    //   source: sourceOptions
-    // });
-
-    var styleCache = {};
-
-    var styles = function(feature) {
-      var style = styleCache['default'];
-      if (!style) {
-        style = new Style({
-          image: new CircleStyle({
-            radius: 2,
-            fill: new Fill({
-              color: '#ff0000'
-            })
-          })
-        });
-        styleCache['default'] = style;
-      }
-      return style;
-    };
-
     var layer = new LayerVectorTile({
-      renterType: 'image',
-      renderBuffer: 2,
       extent: extent,
-      source: sourceOptions,
-      declutter: false,
-      style: styles
+      source: sourceOptions
     });
-
-    if (config.vectorStyles && def.vectorStyle.id) {
-      var vectorStyles = config.vectorStyles.rendered;
-      var vectorStyle = def.vectorStyle.id;
-
-      $(document).ready(function() {
-        function getVals() {
-          // Get slider values
-          var parent = this.parentNode;
-          var slides = parent.getElementsByTagName('input');
-          var slide1 = parseFloat(slides[0].value);
-          var slide2 = parseFloat(slides[1].value);
-          // Neither slider will clip the other, so make sure we determine which is larger
-          if (slide1 > slide2) { var tmp = slide2; slide2 = slide1; slide1 = tmp; }
-
-          var displayElement = parent.getElementsByClassName('rangeValues')[0];
-          displayElement.innerHTML = slide1 + ' - ' + slide2;
-        }
-
-        window.onload = function() {
-          // Initialize Sliders
-          var sliderSections = document.getElementsByClassName('range-slider');
-          for (var x = 0; x < sliderSections.length; x++) {
-            var sliders = sliderSections[x].getElementsByTagName('input');
-            for (var y = 0; y < sliders.length; y++) {
-              if (sliders[y].type === 'range') {
-                sliders[y].oninput = getVals;
-                // Manually trigger event first time to display values
-                sliders[y].oninput();
-              }
-            }
-          }
-
-          let confidenceMinFilter = document.getElementById('confidenceMinFilter');
-          let confidenceMaxFilter = document.getElementById('confidenceMaxFilter');
-
-          document.getElementById('confidenceMinFilterLabel').innerHTML = confidenceMinFilter.value;
-          document.getElementById('confidenceMaxFilterLabel').innerHTML = confidenceMaxFilter.value;
-        };
-
-        $(document).on('change', function(e) {
-          var glStyle = vectorStyles[vectorStyle];
-          // Set default styles
-          var styleFunction;
-
-          if (document.getElementById('frpCheckbox').checked === true) {
-            styleFunction = stylefunction(layer, glStyle, 'MODIS_Fire_Points_FRP');
-          } else if (document.getElementById('confidenceCheckbox').checked === true) {
-            styleFunction = stylefunction(layer, glStyle, 'MODIS_Fire_Points_Confidence');
-          } else {
-            styleFunction = stylefunction(layer, glStyle, 'default_style');
-          }
-
-          let confidenceMinFilter = document.getElementById('confidenceMinFilter');
-          let confidenceMaxFilter = document.getElementById('confidenceMaxFilter');
-
-          document.getElementById('confidenceMinFilterLabel').innerHTML = confidenceMinFilter.value;
-          document.getElementById('confidenceMaxFilterLabel').innerHTML = confidenceMaxFilter.value;
-
-          // Filter by a feature
-          layer.setStyle(function(feature, resolution) {
-            if (feature.get('CONFIDENCE') >= confidenceMinFilter.value && feature.get('CONFIDENCE') <= confidenceMaxFilter.value) {
-              return styleFunction(feature, resolution);
-            }
-          });
-        });
-      });
-    }
 
     return layer;
   };
