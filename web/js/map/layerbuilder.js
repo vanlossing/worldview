@@ -367,7 +367,7 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
     };
 
     var layer = new LayerVectorTile({
-      renterType: 'image',
+      renderMode: 'image',
       renderBuffer: 2,
       extent: extent,
       source: sourceOptions,
