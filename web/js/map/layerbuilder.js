@@ -329,12 +329,9 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
 
     var sourceOptions = new SourceVectorTile({
       url: source.url + urlParameters,
-      cacheSize: 8192,
       layer: layerName,
-      crossOrigin: 'anonymous',
       format: new MVT(),
-      overlaps: false,
-      wrapX: false,
+      projection: 'EPSG:4326',
       tileGrid: new OlTileGridTileGrid({
         extent: extent,
         origin: start,
@@ -367,11 +364,8 @@ export function mapLayerBuilder(models, config, cache, mapUi) {
     };
 
     var layer = new LayerVectorTile({
-      renderMode: 'image',
-      renderBuffer: 2,
       extent: extent,
       source: sourceOptions,
-      declutter: false,
       style: styles
     });
 
