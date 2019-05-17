@@ -17,7 +17,7 @@ export function toggleSidebarCollapse(str) {
   };
 }
 
-export function collapseSidebar(str) {
+export function collapseSidebar() {
   return {
     type: COLLAPSE_SIDEBAR
   };
