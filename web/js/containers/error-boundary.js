@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { openCustomContent } from '../modules/modal/actions';
 const HEADER_TEXT = 'Error!';
+
 const BODY_COMPONENT = () => (
   <React.Fragment>
     <div className="error-header">
@@ -16,6 +17,7 @@ const BODY_COMPONENT = () => (
     </div>
   </React.Fragment>
 );
+
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
