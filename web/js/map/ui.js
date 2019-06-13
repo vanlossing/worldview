@@ -37,6 +37,7 @@ import Cache from 'cachai';
 import * as layerConstants from '../modules/layers/constants';
 import * as compareConstants from '../modules/compare/constants';
 import * as paletteConstants from '../modules/palettes/constants';
+import * as vectorStyleConstants from '../modules/vector-styles/constants';
 import {
   getLayers,
   isRenderable as isRenderableLayer
@@ -118,10 +119,15 @@ export function mapui(models, config, store, ui) {
         return reloadLayers();
       case CHANGE_PROJECTION:
         return updateProjection();
-      case paletteConstants.SET_RANGE_AND_SQUASH:
+      case paletteConstants.SET_THRESHOLD_RANGE_AND_SQUASH:
       case paletteConstants.SET_CUSTOM:
       case paletteConstants.CLEAR_CUSTOM:
       case paletteConstants.REQUEST_PALETTE_SUCESS:
+        return updateLookup();
+      case vectorStyleConstants.SET_FILTER_RANGE:
+      case vectorStyleConstants.SET_VECTORSTYLE:
+      case vectorStyleConstants.CLEAR_VECTORSTYLE:
+      case vectorStyleConstants.REQUEST_VECTORSTYLE_SUCCESS:
         return updateLookup();
       case CALCULATE_RESPONSIVE_STATE:
         return onResize();
