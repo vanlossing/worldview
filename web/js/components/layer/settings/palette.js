@@ -40,15 +40,15 @@ class PaletteSelect extends React.Component {
    * @param {String} id | custom Palette Id
    */
   onChangePalette(id) {
-    const { layer, clearCustom, setCustom, groupName, index } = this.props;
+    const { layer, clearCustomPalette, setCustomPalette, groupName, index } = this.props;
 
     // Applying customs takes a while and
     // it looks more natural to make this async
     // instead of waiting
     if (id === '__default') {
-      clearCustom(layer.id, index, groupName);
+      clearCustomPalette(layer.id, index, groupName);
     } else {
-      setCustom(layer.id, id, index, groupName);
+      setCustomPalette(layer.id, id, index, groupName);
     }
     this.setState({ activePalette: id });
   }
@@ -189,8 +189,8 @@ class PaletteSelect extends React.Component {
 PaletteSelect.propTypes = {
   index: PropTypes.number,
   layer: PropTypes.object,
-  clearCustom: PropTypes.func,
-  setCustom: PropTypes.func,
+  clearCustomPalette: PropTypes.func,
+  setCustomPalette: PropTypes.func,
   paletteOrder: PropTypes.array,
   palettesTranslate: PropTypes.func,
   getDefaultLegend: PropTypes.func,
