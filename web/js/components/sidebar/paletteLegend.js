@@ -4,7 +4,7 @@ import util from '../../util/util';
 import { drawPaletteOnCanvas } from '../../modules/palettes/util';
 import lodashIsNumber from 'lodash/isNumber';
 
-class Legend extends React.Component {
+class PaletteLegend extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -115,9 +115,9 @@ class Legend extends React.Component {
    * Style Canvas bases on updates to legend or canvas-width
    */
   updateCanvas() {
-    const { checkerBoardPattern, height, width, legends } = this.props;
+    const { checkerBoardPattern, height, width, paletteLegends } = this.props;
 
-    legends.forEach((colorMap, index) => {
+    paletteLegends.forEach((colorMap, index) => {
       if (colorMap.type === 'continuous' || colorMap.type === 'discrete') {
         let ctxStr = 'canvas_' + index;
         if (this[ctxStr]) {
@@ -196,7 +196,7 @@ class Legend extends React.Component {
     return { left: xOffset - halfTextWidth + 'px' };
   }
   /**
-   * Render scale-type legends
+   * Render scale-type paletteLegends
    * @param {Object} legend
    * @param {Number} index
    * @param {Boolean} isMoreThanOneColorBar
@@ -362,12 +362,12 @@ class Legend extends React.Component {
   /**
    * Loop through colormaps and render correct legend type
    */
-  renderLegends() {
-    const { legends } = this.props;
-    return legends.map((colorMap, index) => {
+  renderPaletteLegends() {
+    const { paletteLegends } = this.props;
+    return paletteLegends.map((colorMap, index) => {
       if (colorMap.type === 'continuous' || colorMap.type === 'discrete') {
         this['canvas_' + index] = React.createRef();
-        return this.renderScale(colorMap, index, legends.length > 1);
+        return this.renderScale(colorMap, index, paletteLegends.length > 1);
       } else if (colorMap.type === 'classification') {
         return this.renderClasses(colorMap, index);
       }
@@ -388,26 +388,26 @@ class Legend extends React.Component {
         datalayer={layer.id}
         id={paletteId + '_panel'}
       >
-        {this.renderLegends()}
+        {this.renderPaletteLegends()}
       </div>
     );
   }
 }
-Legend.defaultProps = {
+PaletteLegend.defaultProps = {
   isRunningData: false,
   isHoveringLegend: false,
   isRunningDataEnabled: true,
   width: 231,
   height: 12
 };
-Legend.propTypes = {
+PaletteLegend.propTypes = {
   paletteId: PropTypes.string,
   layer: PropTypes.object,
   checkerBoardPattern: PropTypes.object,
   isHoveringLegend: PropTypes.bool,
   isRunningDataEnabled: PropTypes.bool,
   getPalette: PropTypes.func,
-  legends: PropTypes.array,
+  paletteLegends: PropTypes.array,
   width: PropTypes.number,
   height: PropTypes.number,
   isRunningData: PropTypes.bool,
@@ -416,4 +416,4 @@ Legend.propTypes = {
   isCustomPalette: PropTypes.bool
 };
 
-export default Legend;
+export default PaletteLegend;
