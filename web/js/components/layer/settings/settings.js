@@ -213,6 +213,8 @@ class LayerSettings extends React.Component {
   renderVectorStyles() {
     const {
       setFilterRange,
+      setStyle,
+      clearStyle,
       groupName,
       layer,
       vectorStyles
@@ -373,5 +375,8 @@ LayerSettings.propTypes = {
   palettedAllowed: PropTypes.bool,
   layer: PropTypes.object,
   title: PropTypes.string,
-  groupName: PropTypes.string
+  groupName: PropTypes.string,
+  vectorStyles: PropTypes.object,
+  clearStyle: PropTypes.func,
+  setStyle: PropTypes.func
 };
