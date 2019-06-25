@@ -100,7 +100,6 @@ export function mapui(models, config, store, ui) {
         if (newState.v && !newState.e && extent) {
           flyToNewExtent(extent, rotation);
         }
-        // ''}
         return;
       case layerConstants.REMOVE_LAYER:
         return removeLayer(action);

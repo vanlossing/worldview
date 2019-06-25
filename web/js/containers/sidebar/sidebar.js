@@ -12,7 +12,6 @@ import NavCase from '../../components/sidebar/nav/nav-case';
 import googleTagManager from 'googleTagManager';
 import { getCheckerboard, loadCustom as loadCustomPalette } from '../../modules/palettes/util';
 import { loadedCustomPalettes } from '../../modules/palettes/actions';
-import { loadedDefaultVectorStyles } from '../../modules/vector-styles/actions';
 import { getLayers } from '../../modules/layers/selectors';
 import ErrorBoundary from '../error-boundary';
 import util from '../../util/util';
@@ -260,9 +259,6 @@ const mapDispatchToProps = dispatch => ({
   },
   loadedCustomPalettes: customs => {
     dispatch(loadedCustomPalettes(customs));
-  },
-  loadedDefaultVectorStyles: customs => {
-    dispatch(loadedDefaultVectorStyles(customs));
   }
 });
 
@@ -289,7 +285,6 @@ Sidebar.propTypes = {
   collapseSidebar: PropTypes.func,
   collapseExpandToggle: PropTypes.func,
   loadedCustomPalettes: PropTypes.func,
-  loadedDefaultVectorStyles: PropTypes.func,
   config: PropTypes.object,
   changeTab: PropTypes.func
 };
