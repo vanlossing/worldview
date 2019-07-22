@@ -3,6 +3,7 @@ import { assign as lodashAssign } from 'lodash';
 
 const INITIAL_STATE = {
   selected: '',
+  index: 0,
   active: false
 };
 
@@ -11,14 +12,22 @@ export default function tourReducer(state = INITIAL_STATE, action) {
     case END_TOUR:
       return lodashAssign({}, state, {
         selected: '',
-        active: false
+        active: false,
+        index: 0
       });
     case START:
       return lodashAssign({}, state, {
         selected: '',
-        active: true
+        active: true,
+        index: 0
       });
     case UPDATE_SELECTED:
+      return lodashAssign({}, state, {
+        selected: action.id,
+        active: true,
+        index: 0
+      });
+    case 'update-index':
       return lodashAssign({}, state, {
         selected: action.id,
         active: true

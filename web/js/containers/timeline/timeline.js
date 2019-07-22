@@ -611,97 +611,97 @@ class Timeline extends React.Component {
     });
   }
 
-  static getDerivedStateFromProps(props, currentState) {
-    // Update animation Date states when animation is initiated
-    if (!currentState.animationEndLocationDate && !currentState.animationStartLocationDate && props.animStartLocationDate && props.animEndLocationDate) {
-      let { position, transformX } = currentState;
-      let { timeScale } = props;
-      let startDate = props.animStartLocationDate;
-      let endDate = props.animEndLocationDate;
-      let options = timeScaleOptions[timeScale].timeAxis;
-      let gridWidth = options.gridWidth;
+  // static getDerivedStateFromProps(props, currentState) {
+  //   // Update animation Date states when animation is initiated
+  //   if (!currentState.animationEndLocationDate && !currentState.animationStartLocationDate && props.animStartLocationDate && props.animEndLocationDate) {
+  //     let { position, transformX } = currentState;
+  //     let { timeScale } = props;
+  //     let startDate = props.animStartLocationDate;
+  //     let endDate = props.animEndLocationDate;
+  //     let options = timeScaleOptions[timeScale].timeAxis;
+  //     let gridWidth = options.gridWidth;
 
-      let frontDate = moment.utc(currentState.frontDate);
-      let startLocation = frontDate.diff(startDate, timeScale, true) * gridWidth;
-      let endLocation = frontDate.diff(endDate, timeScale, true) * gridWidth;
-      return {
-        animationStartLocationDate: props.animStartLocationDate,
-        animationEndLocationDate: props.animEndLocationDate,
-        animationStartLocation: position - startLocation + transformX,
-        animationEndLocation: position - endLocation + transformX
-      };
-    }
-    return null;
-  }
+  //     let frontDate = moment.utc(currentState.frontDate);
+  //     let startLocation = frontDate.diff(startDate, timeScale, true) * gridWidth;
+  //     let endLocation = frontDate.diff(endDate, timeScale, true) * gridWidth;
+  //     return {
+  //       animationStartLocationDate: props.animStartLocationDate,
+  //       animationEndLocationDate: props.animEndLocationDate,
+  //       animationStartLocation: position - startLocation + transformX,
+  //       animationEndLocation: position - endLocation + transformX
+  //     };
+  //   }
+  //   return null;
+  // }
 
-  componentDidUpdate(prevProps, prevState) {
-    let prevStartLocationDate = prevProps.animStartLocationDate;
-    let prevEndLocationDate = prevProps.animEndLocationDate;
+  // componentDidUpdate(prevProps, prevState) {
+  //   let prevStartLocationDate = prevProps.animStartLocationDate;
+  //   let prevEndLocationDate = prevProps.animEndLocationDate;
 
-    let {
-      animStartLocationDate,
-      animEndLocationDate,
-      dateA,
-      dateB,
-      isAnimationPlaying,
-      isAnimationWidgetOpen,
-      isGifActive,
-      isTourActive,
-      customSelected,
-      customIntervalValue,
-      customIntervalZoomLevel,
-      timeScale,
-      timeScaleChangeUnit,
-      deltaChangeAmt
-    } = this.props;
+  //   let {
+  //     animStartLocationDate,
+  //     animEndLocationDate,
+  //     dateA,
+  //     dateB,
+  //     isAnimationPlaying,
+  //     isAnimationWidgetOpen,
+  //     isGifActive,
+  //     isTourActive,
+  //     customSelected,
+  //     customIntervalValue,
+  //     customIntervalZoomLevel,
+  //     timeScale,
+  //     timeScaleChangeUnit,
+  //     deltaChangeAmt
+  //   } = this.props;
 
-    // handle update animation positioning and local state from play button/gif creation
-    const didAnimationTurnOn = !prevProps.isAnimationPlaying && isAnimationPlaying;
-    const didGifTurnOn = !prevProps.isGifActive && isGifActive;
-    if (didAnimationTurnOn || didGifTurnOn) {
-      this.animationDraggerDateUpdateLocal(animStartLocationDate, animEndLocationDate);
-    }
+  //   // handle update animation positioning and local state from play button/gif creation
+  //   const didAnimationTurnOn = !prevProps.isAnimationPlaying && isAnimationPlaying;
+  //   const didGifTurnOn = !prevProps.isGifActive && isGifActive;
+  //   if (didAnimationTurnOn || didGifTurnOn) {
+  //     this.animationDraggerDateUpdateLocal(animStartLocationDate, animEndLocationDate);
+  //   }
 
-    // handle location update triggered from animation start/end date change from animation widget
-    if (isAnimationWidgetOpen) {
-      if (prevStartLocationDate && prevEndLocationDate) {
-        const animStartDateChanged = prevStartLocationDate.getTime() !== animStartLocationDate.getTime();
-        const animEndDateChanged = prevEndLocationDate.getTime() !== animEndLocationDate.getTime();
-        const frontDateChanged = prevState.frontDate !== this.state.frontDate;
-        if (animStartDateChanged || animEndDateChanged || frontDateChanged) {
-          this.animationDraggerDateUpdate(animStartLocationDate, animEndLocationDate);
-        }
-      }
+  //   // handle location update triggered from animation start/end date change from animation widget
+  //   if (isAnimationWidgetOpen) {
+  //     if (prevStartLocationDate && prevEndLocationDate) {
+  //       const animStartDateChanged = prevStartLocationDate.getTime() !== animStartLocationDate.getTime();
+  //       const animEndDateChanged = prevEndLocationDate.getTime() !== animEndLocationDate.getTime();
+  //       const frontDateChanged = prevState.frontDate !== this.state.frontDate;
+  //       if (animStartDateChanged || animEndDateChanged || frontDateChanged) {
+  //         this.animationDraggerDateUpdate(animStartLocationDate, animEndLocationDate);
+  //       }
+  //     }
 
-      // handle open/close custom interval panel if 'custom' selected in animation widget
-      // and no custom value has been initialized
-      if (customIntervalValue === 1 && customIntervalZoomLevel === 3) {
-        if (!prevProps.customSelected && customSelected) {
-          this.toggleCustomIntervalModal(true);
-        }
-        if (prevProps.customSelected && !customSelected) {
-          this.toggleCustomIntervalModal(false);
-        }
-      }
-    }
-    if (dateA !== prevProps.dateA && dateA !== this.state.draggerTimeState) {
-      this.updateDraggerTimeState(dateA, false);
-    }
-    if (dateB !== prevProps.dateB && dateB !== this.state.draggerTimeStateB) {
-      this.updateDraggerTimeState(dateB, true);
-    }
+  //     // handle open/close custom interval panel if 'custom' selected in animation widget
+  //     // and no custom value has been initialized
+  //     if (customIntervalValue === 1 && customIntervalZoomLevel === 3) {
+  //       if (!prevProps.customSelected && customSelected) {
+  //         this.toggleCustomIntervalModal(true);
+  //       }
+  //       if (prevProps.customSelected && !customSelected) {
+  //         this.toggleCustomIntervalModal(false);
+  //       }
+  //     }
+  //   }
+  //   if (dateA !== prevProps.dateA && dateA !== this.state.draggerTimeState) {
+  //     this.updateDraggerTimeState(dateA, false);
+  //   }
+  //   if (dateB !== prevProps.dateB && dateB !== this.state.draggerTimeStateB) {
+  //     this.updateDraggerTimeState(dateB, true);
+  //   }
 
-    // on tour page change, will update interval to selectedzoom if differs
-    // (e.g., 'month' zoom will default to 'month' interval)
-    // TODO: investigate how to handle this page update better - this limits functionality when in tour mode
-    if (isTourActive) {
-      if (timeScale !== prevProps.timeScale && prevProps.timeScaleChangeUnit !== timeScale) {
-        if (timeScale !== timeScaleChangeUnit && !customSelected) {
-          this.props.selectInterval(deltaChangeAmt, timeScaleToNumberKey[timeScale], false);
-        }
-      }
-    }
-  }
+  //   // on tour page change, will update interval to selectedzoom if differs
+  //   // (e.g., 'month' zoom will default to 'month' interval)
+  //   // TODO: investigate how to handle this page update better - this limits functionality when in tour mode
+  //   if (isTourActive) {
+  //     if (timeScale !== prevProps.timeScale && prevProps.timeScaleChangeUnit !== timeScale) {
+  //       if (timeScale !== timeScaleChangeUnit && !customSelected) {
+  //         this.props.selectInterval(deltaChangeAmt, timeScaleToNumberKey[timeScale], false);
+  //       }
+  //     }
+  //   }
+  // }
 
   /**
   * @desc update dragger time state
