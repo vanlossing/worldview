@@ -1,5 +1,10 @@
 {
     "layerOrder": [
+        "Nuclear_Power_Plant_Locations_v1_STD",
+        "GRanD_Dams_v1.01_STD",
+        "GRanD_Reservoirs_v1.01_STD",
+        "GRUMP_Settlements_v1.01_STD",
+
         "OrbitTracks_Aqua_Ascending",
         "OrbitTracks_Aqua_Descending",
         "OrbitTracks_Aura_Ascending",
