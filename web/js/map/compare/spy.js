@@ -33,6 +33,7 @@ export class Spy {
       this.create(isBInside);
     } else {
       var mapLayers = this.map.getLayers().getArray();
+      console.log(mapLayers);
       applyEventsToBaseLayers(
         mapLayers[0],
         this.map,
@@ -110,7 +111,7 @@ export class Spy {
  * @param {Object} layer | Ol Layer object
  */
 var applyReverseLayerListeners = function(layer) {
-  layer.on('postcompose', inverseClip);
+  layer.on('postrender', inverseClip);
   bottomLayers.push(layer);
 };
 /**
@@ -118,8 +119,8 @@ var applyReverseLayerListeners = function(layer) {
  * @param {Object} layer | Ol Layer object
  */
 var applyLayerListeners = function(layer) {
-  layer.on('precompose', clip);
-  layer.on('postcompose', restore);
+  layer.on('prerender', clip);
+  layer.on('postrender', restore);
   topLayers.push(layer);
 };
 /**
@@ -128,21 +129,14 @@ var applyLayerListeners = function(layer) {
  */
 var inverseClip = function(event) {
   var ctx = event.context;
-  var pixelRatio = event.frameState.pixelRatio;
-  ctx.save();
-  ctx.beginPath();
+
   if (mousePosition) {
     // only show a circle around the mouse
+    ctx.beginPath();
+    ctx.globalCompositeOperation = 'destination-out';
     let x = mousePosition[0];
     let y = mousePosition[1];
-    ctx.arc(
-      x * pixelRatio,
-      y * pixelRatio,
-      radius * pixelRatio,
-      0,
-      2 * Math.PI
-    );
-    ctx.rect(ctx.canvas.width, ctx.canvas.height, -ctx.canvas.width, 0);
+    ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.fill();
   }
 };
@@ -151,18 +145,18 @@ var inverseClip = function(event) {
  */
 var clip = function(event) {
   var ctx = event.context;
-  var pixelRatio = event.frameState.pixelRatio;
   ctx.save();
   ctx.beginPath();
+
   if (mousePosition) {
     // only show a circle around the mouse
     let x = mousePosition[0];
     let y = mousePosition[1];
-    let pixelRadius = radius * pixelRatio;
+    let pixelRadius = radius;
 
-    ctx.arc(x * pixelRatio, y * pixelRatio, pixelRadius, 0, 2 * Math.PI);
+    ctx.arc(x, y, pixelRadius, 0, 2 * Math.PI);
 
-    ctx.lineWidth = 4 * pixelRatio;
+    ctx.lineWidth = 4;
     ctx.strokeStyle = 'rgba(0,0,0,0.4)';
     ctx.stroke();
   }
@@ -178,8 +172,8 @@ var restore = function(event) {
  */
 var removeListenersFromLayers = function(layers) {
   lodashEach(layers, layer => {
-    layer.un('precompose', clip);
-    layer.un('postcompose', restore);
+    layer.un('prerender', clip);
+    layer.un('postrender', restore);
   });
 };
 /**
@@ -188,8 +182,8 @@ var removeListenersFromLayers = function(layers) {
  */
 var removeInverseListenersFromLayers = function(layers) {
   lodashEach(layers, layer => {
-    layer.un('precompose', inverseClip);
-    layer.un('postcompose', restore);
+    layer.un('prerender', inverseClip);
+    layer.un('postrender', restore);
   });
 };
 /**

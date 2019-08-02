@@ -1,6 +1,8 @@
 import util from '../util/util';
 import OlTileGridWMTS from 'ol/tilegrid/WMTS';
 import OlSourceWMTS from 'ol/source/WMTS';
+import OlStroke from 'ol/style/Stroke';
+import OlGraticule from 'ol/layer/Graticule';
 import OlSourceTileWMS from 'ol/source/TileWMS';
 import OlLayerGroup from 'ol/layer/Group';
 import OlLayerTile from 'ol/layer/Tile';
@@ -82,7 +84,6 @@ export function mapLayerBuilder(models, config, cache, ui, store) {
     key = self.layerKey(def, options, state);
     proj = state.proj.selected;
     layer = cache.getItem(key);
-
     if (!layer) {
       // layer is not in the cache
       if (!date) date = options.date || state.date[activeDateStr];
@@ -96,7 +97,6 @@ export function mapLayerBuilder(models, config, cache, ui, store) {
       };
       def = lodashCloneDeep(def);
       lodashMerge(def, def.projections[proj.id]);
-
       if (def.type === 'wmts') {
         layer = createLayerWMTS(def, options, null, state);
         if (
@@ -114,6 +114,16 @@ export function mapLayerBuilder(models, config, cache, ui, store) {
             layers: [layer, layerNext, layerPrior]
           });
         }
+      } else if (def.id === 'Graticule') {
+        layer = new OlGraticule({
+          // the style to use for the lines, optional.
+          strokeStyle: new OlStroke({
+            color: 'rgb(255, 255, 255)',
+            width: 2,
+            lineDash: [0.5, 4]
+          }),
+          showLabels: true
+        });
       } else if (def.type === 'vector') {
         layer = createLayerVector(def, options, null, state);
         if (

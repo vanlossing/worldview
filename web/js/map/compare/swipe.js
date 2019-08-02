@@ -70,7 +70,7 @@ export class Swipe {
   }
   /**
    * Clip the top layer at the right xOffset
-   * @param {Object} event | OL Precompose event object
+   * @param {Object} event | OL prerender event object
    */
   clip(event) {
     var ctx = event.context;
@@ -84,7 +84,7 @@ export class Swipe {
   /**
    * Clip the reverse so users don't see this layerGroup when the other
    * Layer group is transparent
-   * @param {Object} event | OL Precompose event object
+   * @param {Object} event | OL prerender event object
    */
   reverseClip(event) {
     var ctx = event.context;
@@ -108,8 +108,8 @@ export class Swipe {
    */
   removeListenersFromBottomLayers(layers) {
     lodashEach(layers, layer => {
-      layer.un('precompose', this.reverseClip);
-      layer.un('postcompose', restore);
+      layer.un('prerender', this.reverseClip);
+      layer.un('postrender', restore);
     });
   }
   /**
@@ -118,8 +118,8 @@ export class Swipe {
    */
   removeListenersFromLayers(layers) {
     lodashEach(layers, layer => {
-      layer.un('precompose', this.clip);
-      layer.un('postcompose', restore);
+      layer.un('prerender', this.clip);
+      layer.un('postrender', restore);
     });
   }
 }
@@ -236,8 +236,8 @@ var dragLine = function(listenerObj, lineCaseEl, map) {
  * @param {Object} layer | Ol Layer object
  */
 var applyLayerListeners = function(layer) {
-  layer.on('precompose', this.clip);
-  layer.on('postcompose', restore);
+  layer.on('prerender', this.clip);
+  layer.on('postrender', restore);
   bottomLayers.push(layer);
 };
 /**
@@ -246,8 +246,8 @@ var applyLayerListeners = function(layer) {
  * @param {Object} layer | Ol Layer object
  */
 var applyReverseLayerListeners = function(layer) {
-  layer.on('precompose', this.reverseClip);
-  layer.on('postcompose', restore);
+  layer.on('prerender', this.reverseClip);
+  layer.on('postrender', restore);
   topLayers.push(layer);
 };
 
