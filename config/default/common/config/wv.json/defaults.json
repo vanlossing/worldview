@@ -2,6 +2,7 @@
     "defaults": {
         "projection": "geographic",
         "startingLayers": [
+            "BlueMarble_ShadedRelief_Bathymetry"
         ]
     }
 }

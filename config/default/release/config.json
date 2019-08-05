@@ -23,7 +23,7 @@
         {
             "from": "http://gibs.earthdata.nasa.gov/wmts/epsg3031/std/wmts.cgi?request=GetCapabilities",
             "to": "gibs-antarctic.xml"
-        }
+        },
         {
             "from": "http://uat.gibs.earthdata.nasa.gov/wmts/epsg3031/std/wmts.cgi?request=GetCapabilities",
             "to": "gibs-antarctic-vectors-uat.xml"
