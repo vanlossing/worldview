@@ -9,6 +9,9 @@
         "GIBS:geographic": {
             "url": "https://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg4326/std/wmts.cgi"
         },
+        "GIBS:geographic:subdaily": {
+            "url": "https://uat.gibs.earthdata.nasa.gov/wmts/epsg4326/nrt/wmts.cgi"
+        },
         "GIBS:wms": {
             "url": "https://cache1-sit.gibs.earthdata.nasa.gov/wms/epsg4326/std/wms.cgi"
         },
