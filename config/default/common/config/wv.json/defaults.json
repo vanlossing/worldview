@@ -2,7 +2,10 @@
     "defaults": {
         "projection": "geographic",
         "startingLayers": [
-            "BlueMarble_ShadedRelief_Bathymetry"
+            { "id": "BlueMarble_ShadedRelief_Bathymetry" },
+            { "id": "Coastlines" },
+            { "id": "Reference_Features", "hidden": "true" },
+            { "id": "Reference_Labels", "hidden": "true" }
         ]
     }
 }
