@@ -1,10 +1,5 @@
 {
     "layerOrder": [
-        "Nuclear_Power_Plant_Locations_v1_STD",
-        "GRanD_Dams_v1.01_STD",
-        "GRanD_Reservoirs_v1.01_STD",
-        "GRUMP_Settlements_v1.01_STD",
-
         "OrbitTracks_Aqua_Ascending",
         "OrbitTracks_Aqua_Descending",
         "OrbitTracks_Aura_Ascending",
@@ -61,9 +56,6 @@
         "OrbitTracks_Suomi_NPP_Descending",
         "OrbitTracks_Terra_Ascending",
         "OrbitTracks_Terra_Descending",
-
-
-
         "MODIS_Aqua_Thermal_Anomalies_All_v6_NRT-2km",
         "MODIS_Aqua_Thermal_Anomalies_Day_v6_NRT-2km",
         "MODIS_Aqua_Thermal_Anomalies_Night_v6_NRT-2km",

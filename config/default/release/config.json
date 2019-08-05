@@ -1,8 +1,12 @@
 {
     "wv-options-fetch": [
         {
-            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg4326/std/wmts.cgi?request=GetCapabilities",
+            "from": "http://gibs.earthdata.nasa.gov/wmts/epsg4326/std/wmts.cgi?request=GetCapabilities",
             "to": "gibs-geographic.xml"
+        },
+        {
+            "from": "http://uat.gibs.earthdata.nasa.gov/wmts/epsg4326/std/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-geographic-vectors-uat.xml"
         },
         {
             "from": "https://uat.gibs.earthdata.nasa.gov/wmts/epsg4326/nrt/wmts.cgi?request=GetCapabilities",
@@ -13,8 +17,16 @@
             "to": "gibs-arctic.xml"
         },
         {
-            "from": "http://cache1-sit.gibs.earthdata.nasa.gov/wmts/epsg3031/std/wmts.cgi?request=GetCapabilities",
+            "from": "https://uat.gibs.earthdata.nasa.gov/wmts/epsg3413/std/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-arctic-vectors-uat.xml"
+        },
+        {
+            "from": "http://gibs.earthdata.nasa.gov/wmts/epsg3031/std/wmts.cgi?request=GetCapabilities",
             "to": "gibs-antarctic.xml"
+        }
+        {
+            "from": "http://uat.gibs.earthdata.nasa.gov/wmts/epsg3031/std/wmts.cgi?request=GetCapabilities",
+            "to": "gibs-antarctic-vectors-uat.xml"
         }
     ],
     "wv-options-wmts": [
@@ -22,6 +34,13 @@
             "source": "GIBS:geographic",
             "from": "gibs-geographic.xml",
             "to": "gibs-geographic.json",
+            "projection": "geographic",
+            "maxResolution": 0.5625
+        },
+        {
+            "source": "GIBS:geographic:vectors:uat",
+            "from": "gibs-geographic-vectors-uat.xml",
+            "to": "gibs-geographic-vectors-uat.json",
             "projection": "geographic",
             "maxResolution": 0.5625
         },
@@ -40,9 +59,23 @@
             "maxResolution": 8192.0
         },
         {
+            "source": "GIBS:arctic:vectors:uat",
+            "from": "gibs-arctic-vectors-uat.xml",
+            "to": "gibs-arctic-vectors-uat.json",
+            "projection": "arctic",
+            "maxResolution": 8192.0
+        },
+        {
             "source": "GIBS:antarctic",
             "from": "gibs-antarctic.xml",
             "to": "gibs-antarctic.json",
+            "projection": "antarctic",
+            "maxResolution": 8192.0
+        },
+        {
+            "source": "GIBS:antarctic:vectors:uat",
+            "from": "gibs-antarctic-vectors-uat.xml",
+            "to": "gibs-antarctic-vectors-uat.json",
             "projection": "antarctic",
             "maxResolution": 8192.0
         }
