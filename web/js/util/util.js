@@ -74,7 +74,7 @@ export default (function (self) {
     }
     return value;
   };
-  self.preventPinch = function(e) {
+  self.preventPinch = function (e) {
     if (e.deltaY && !Number.isInteger(e.deltaY)) {
       e.stopPropagation();
       e.preventDefault();
@@ -117,7 +117,7 @@ export default (function (self) {
     }
     return result;
   };
-  self.elapsed = function(message, startTime, parameters) {
+  self.elapsed = function (message, startTime, parameters) {
     if (parameters && !parameters.elapsed) return;
     var t = new Date().getTime() - startTime;
     console.log(t, message);
@@ -238,7 +238,7 @@ export default (function (self) {
       let part = item.id || '';
       const attributes = [];
       if (item.attributes && item.attributes.length > 0) {
-        lodashEach(item.attributes, function(attribute) {
+        lodashEach(item.attributes, function (attribute) {
           if (attribute.value) {
             attributes.push(attribute.id + '=' + attribute.value);
           } else {
@@ -256,7 +256,7 @@ export default (function (self) {
    * Test if is valid Date
    * @param {Object} d | Date object
    */
-  self.isValidDate = function(d) {
+  self.isValidDate = function (d) {
     return d instanceof Date && !isNaN(d);
   };
   /**
@@ -450,7 +450,7 @@ export default (function (self) {
     return newDate;
   };
 
-  self.getNumberOfDays = function(start, end, interval, increment) {
+  self.getNumberOfDays = function (start, end, interval, increment) {
     increment = increment || 1;
     var i = 1;
     var currentDate = start;
@@ -755,13 +755,16 @@ export default (function (self) {
    * @param {object*} messages Messages to display to the end user.
    */
   self.warn = (console && console.warn && console.warn.bind)
-    ? console.warn.bind(console) : function () {};
+    ? console.warn.bind(console) : function () { };
 
-  self.hexToRGB = function (str) {
-    return 'rgb(' +
-      parseInt(str.substring(0, 2), 16) + ',' +
-      parseInt(str.substring(2, 4), 16) + ',' +
-      parseInt(str.substring(4, 6), 16) + ')';
+  self.hexToRGB = function (str, returnAsArray) {
+    const r = parseInt(str.substring(0, 2), 16);
+    const g = parseInt(str.substring(2, 4), 16);
+    const b = parseInt(str.substring(4, 6), 16);
+    return returnAsArray ? [r, g, b] : 'rgb(' +
+      r + ',' +
+      g + ',' +
+      b + ')';
   };
 
   self.hexToRGBA = function (str) {
@@ -773,7 +776,7 @@ export default (function (self) {
   };
 
   self.rgbaToHex = function (r, g, b) {
-    function hex (c) {
+    function hex(c) {
       var strHex = c.toString(16);
       return strHex.length === 1 ? '0' + strHex : strHex;
     }
@@ -790,18 +793,18 @@ export default (function (self) {
     // calculate differences in 3D Space
     return Math.sqrt(Math.pow((r1 - r2), 2) + Math.pow((g1 - g2), 2) + Math.pow((b1 - b2), 2));
   };
-  self.fetch = function(url, mimeType) {
+  self.fetch = function (url, mimeType) {
     return new Promise((resolve, reject) => {
       return fetch(url)
-        .then(function(response) {
+        .then(function (response) {
           return mimeType === 'application/json'
             ? response.json()
             : response.text();
         })
-        .then(function(data) {
+        .then(function (data) {
           resolve(data);
         })
-        .catch(function(error) {
+        .catch(function (error) {
           reject(error);
         });
     });
@@ -856,9 +859,9 @@ export default (function (self) {
       }
     };
   };
-  self.errorReport = function(errors) {
+  self.errorReport = function (errors) {
     var layersRemoved = 0;
-    lodashEach(errors, function(error) {
+    lodashEach(errors, function (error) {
       var cause = error.cause ? ': ' + error.cause : '';
       self.warn(error.message + cause);
       if (error.layerRemoved) {
@@ -956,14 +959,14 @@ export default (function (self) {
   // The original plan was to escape the special characters but that
   // became confusing as element attributes would need one escape character
   // but the selector would need two (\. vs \\.)
-  self.encodeId = function(str) {
+  self.encodeId = function (str) {
     return str.replace(/[.:]/g, (match) => {
       return '__' + match.charCodeAt(0).toString(16).toUpperCase() + '__';
     });
   };
 
   // Converts an encoded identifier back to its original value.
-  self.decodeId = function(str) {
+  self.decodeId = function (str) {
     return str.replace(/__[0-9A-Fa-f]{2}__/g, (match) => {
       const charCode = Number.parseInt(match.substring(2, 4), 16);
       return String.fromCharCode(charCode);
@@ -1071,14 +1074,14 @@ export default (function (self) {
   };
 
   // Returns the number of months between two dates
-  self.yearDiff = function(startDate, endDate) {
+  self.yearDiff = function (startDate, endDate) {
     var year1 = startDate.getFullYear();
     var year2 = endDate.getFullYear();
     return year2 - year1;
   };
 
   // Returns the number of months between two dates
-  self.monthDiff = function(startDate, endDate) {
+  self.monthDiff = function (startDate, endDate) {
     var year1 = startDate.getFullYear();
     var year2 = endDate.getFullYear();
     var month1 = startDate.getMonth();
@@ -1220,7 +1223,7 @@ export default (function (self) {
    * @param {String} value | String to return index of
    * @return {Number}
    */
-  self.stringInArray = function(arra, value) {
+  self.stringInArray = function (arra, value) {
     for (var i = 0, len = arra.length; i < len; i++) {
       if (arra[i] === value) {
         return i;
@@ -1241,11 +1244,11 @@ export default (function (self) {
     var currentDate = new Date(date.getTime());
     if (!dateArray) return date;
     if ((def.period === 'monthly' && (isFirstDayOfMonth(currentDate) || isLastDayOfMonth(currentDate))) ||
-        (def.period === 'yearly' && ((currentDate.getDate() === 1 &&
-          currentDate.getMonth() === 0) || (currentDate === lastDayOfYear(currentDate))))) return date;
+      (def.period === 'yearly' && ((currentDate.getDate() === 1 &&
+        currentDate.getMonth() === 0) || (currentDate === lastDayOfYear(currentDate))))) return date;
     // Return an array of the closest available dates within the range
     var closestAvailableDates = [];
-    lodashEach(dateArray, function(rangeDate) {
+    lodashEach(dateArray, function (rangeDate) {
       if (isBefore(rangeDate, currentDate) || isEqual(rangeDate, currentDate)) {
         closestAvailableDates.push(rangeDate);
       }
@@ -1265,7 +1268,7 @@ export default (function (self) {
    * @param  {array} comment seperated list of objects
    * @return {bool}
    */
-  self.objectsHaveSameKeys = function(...objects) {
+  self.objectsHaveSameKeys = function (...objects) {
     const allKeys = objects.reduce((keys, object) => keys.concat(Object.keys(object)), []);
     const union = new Set(allKeys);
     return objects.every(object => union.size === Object.keys(object).length);
