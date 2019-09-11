@@ -43,7 +43,6 @@ class ThresholdSelect extends React.Component {
   updateThreshold(thresholdArray) {
     const { layerId, index, groupName } = this.props;
     const { start, end } = this.state;
-
     const newStart = Math.ceil(Number(thresholdArray[0]));
     const newEnd = Math.ceil(Number(thresholdArray[1]));
     if (newStart !== start && newEnd !== end) {

@@ -71,10 +71,15 @@ export function layerReducer(state = initialState, action) {
       let layerIndex = lodashFindIndex(state[layerGroupStr], {
         id: action.layerId
       });
+      const layer = state[layerGroupStr][layerIndex];
+      let { max, min, squash } = action.props;
+      max = updatePaletteProp(layer, 'max', action.index, max);
+      min = updatePaletteProp(layer, 'min', action.index, min);
+      squash = updatePaletteProp(layer, 'squash', action.index, squash);
       return update(state, {
         [layerGroupStr]: {
           [layerIndex]: {
-            $merge: action.props
+            $merge: { min, max, squash }
           }
         }
       });
@@ -156,4 +161,9 @@ export function layerReducer(state = initialState, action) {
     default:
       return state;
   }
+}
+const updatePaletteProp = function (layer, property, index, value) {
+  let array = layer[property] ? layer[property] : ['', ''];
+  array[index] = value;
+  return array;
 }
