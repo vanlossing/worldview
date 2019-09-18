@@ -75,13 +75,19 @@ def process_layer(gc_layer, wv_layers, colormaps):
         if dimension["ows:Identifier"] == "Time":
             wv_layer = process_temporal(wv_layer, dimension["Value"])
     # Extract matrix set
-    matrixSet = gc_layer["TileMatrixSetLink"]["TileMatrixSet"]
+    matrixSetLink = gc_layer["TileMatrixSetLink"]
+    matrixSet = matrixSetLink["TileMatrixSet"]
+
     wv_layer["projections"] = {
         entry["projection"]: {
             "source": entry["source"],
-            "matrixSet": matrixSet
+            "matrixSet": matrixSet,
         }
     }
+
+    if "TileMatrixSetLimits" in matrixSetLink and matrixSetLink["TileMatrixSetLimits"] is not None:
+        matrixSetLimits = matrixSetLink["TileMatrixSetLimits"]["TileMatrixLimits"]
+        wv_layer["projections"][entry["projection"]]["matrixSetLimits"] = matrixSetLimits
 
     # Vector data links
     if "ows:Metadata" in gc_layer and gc_layer["ows:Metadata"] is not None:
@@ -198,6 +204,7 @@ def process_entry(entry, colormaps):
         max_resolution = entry["maxResolution"]
         for zoom in range(0, zoom_levels):
             resolutions = resolutions + [max_resolution / (2 ** zoom)]
+
         wv_matrix_sets[ident] = {
             "id": ident,
             "maxResolution": max_resolution,
@@ -205,7 +212,8 @@ def process_entry(entry, colormaps):
             "tileSize": [
                 int(gc_matrix_set["TileMatrix"][0]["TileWidth"]),
                 int(gc_matrix_set["TileMatrix"][0]["TileHeight"])
-            ]
+            ],
+            "raw": gc_matrix_set
         }
 
     if(type(gc_contents["TileMatrixSet"]) is OrderedDict):
