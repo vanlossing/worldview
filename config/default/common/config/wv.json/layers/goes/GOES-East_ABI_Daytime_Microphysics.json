@@ -10,7 +10,6 @@
             "layergroup": [
               "GOES"
             ],
-            "inactive": true,
             "period": "subdaily"
         }
     }
