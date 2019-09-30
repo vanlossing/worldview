@@ -115,7 +115,7 @@ const mapDispatchToProps = (dispatch) => ({
     const paramArr = [
       'p=geographic&',
       'l=GOES-East_ABI_Band2_Red_Visible,Reference_Labels(hidden),Reference_Features(hidden),Coastlines,VIIRS_SNPP_CorrectedReflectance_TrueColor(hidden),MODIS_Aqua_CorrectedReflectance_TrueColor(hidden),MODIS_Terra_CorrectedReflectance_TrueColor&',
-      't=2019-09-01-T20%3A00%3A41Z&'
+      't=2019-09-01-T20%3A00%3A41Z'
     ];
     const urlParams = paramArr.reduce((prev, curr) => prev + curr, '');
     const location = getLocation(urlParams);
