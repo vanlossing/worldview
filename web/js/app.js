@@ -6,6 +6,7 @@ import googleTagManager from 'googleTagManager';
 // Utils
 import util from './util/util';
 import OlCoordinates from './components/map/ol-coordinates';
+import FeaturedAlert from './components/feature-alert/alert';
 // Toolbar
 import Toolbar from './containers/toolbar';
 import Sidebar from './containers/sidebar/sidebar';
@@ -76,6 +77,7 @@ import '../css/modal.css';
 import '../css/measure.css';
 import '../css/list.css';
 import '../css/vectorMeta.css';
+import '../css/tutorial-toast.css';
 import '../pages/css/document.css';
 import { keyPress } from './modules/key-press/actions';
 
@@ -99,10 +101,11 @@ class App extends React.Component {
   }
 
   render() {
-    const { isAnimationWidgetActive, isTourActive, locationKey } = this.props;
+    const { isAnimationWidgetActive, isTourActive, locationKey, config } = this.props;
     return (
       <div className="wv-content" id="wv-content" data-role="content">
         <Toolbar />
+        <FeaturedAlert buildDate={config.buildDate} />
         <Sidebar />
         {isTourActive ? <Tour /> : null}
         <div id="layer-modal" className="layer-modal" />
@@ -194,6 +197,7 @@ export default connect(
   mapDispatchToProps
 )(App);
 App.propTypes = {
+  config: PropTypes.object,
   isAnimationWidgetActive: PropTypes.bool,
   isTourActive: PropTypes.bool,
   keyPressAction: PropTypes.func,

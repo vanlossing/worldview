@@ -1,0 +1,35 @@
+.wv-tutorial-toast {
+  position: absolute;
+  z-index: 999;
+  & p {
+   margin: 5px 0 10px;
+  }
+  & .wv-toast-btn-container {
+    height: 25px;
+    & .wv-toast-btn-next {
+      float: right;
+    }
+  }
+}
+
+.wv-geostationary-toast {
+  &.step-1 {
+    left: 10px;
+    top: 555px;
+  }
+  &.step-2 {
+    bottom: 70px;
+    left: 75px;
+    z-index: 9;
+  }
+  &.step-3 {
+    bottom: 250px;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translate(-50%);
+  }
+  &.step-4 {
+    bottom: 250px;
+    left: 331px;
+  }
+}
