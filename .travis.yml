@@ -15,7 +15,7 @@ jobs:
           - .python
         npm: true
         pip: true
-
+      install: npm install
     - stage: test
       os: osx
       language: node_js
