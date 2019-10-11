@@ -68,23 +68,23 @@ matrix:
     #       - c:/Python37
     #       - c:/Python37/Scripts
     # - os: windows
-      language: node_js
-      node_js: lts/* # latest LTS Node.js release
-      before_install:
-        - choco install python3
-        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
-        - python --version
-        - python -m ensurepip
-        - pip install virtualenv
-        - python -m venv $HOME/venv
-        - source $HOME/venv/Scripts/activate
-      install: npm install
-      script: npm test
-      cache:
-        directories:
-          - $HOME/venv
-          - c:/Python37
-          - c:/Python37/Scripts
+      # language: node_js
+      # node_js: lts/* # latest LTS Node.js release
+      # before_install:
+      #   - choco install python3
+      #   - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
+      #   - python --version
+      #   - python -m ensurepip
+      #   - pip install virtualenv
+      #   - python -m venv $HOME/venv
+      #   - source $HOME/venv/Scripts/activate
+      # install: npm install
+      # script: npm test
+      # cache:
+      #   directories:
+      #     - $HOME/venv
+      #     - c:/Python37
+      #     - c:/Python37/Scripts
 
 cache:
   directories:
