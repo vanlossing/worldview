@@ -1,22 +1,26 @@
-matrix:
+jobs:
   include:
-    - os: osx
+    - stage: build
+      matrix:
+        include:
+          - os: osx
+            language: node_js
+            node_js: '8.15.1'
+          - os: osx
+            language: node_js
+            node_js: lts/* # latest LTS Node.js release
+      cache:
+        directories:
+          - node_modules
+          - .python
+        npm: true
+        pip: true
+
+    - stage: test
+      os: osx
       language: node_js
-      node_js: lts/* # latest LTS Node.js release
+      node_js: '8.15.1'
+      install: npm install
+      before_script: npm run build
+      script: npm run browserstack
 
-cache:
-  directories:
-    - node_modules
-    - .python
-  npm: true
-  pip: true
-
-install: npm install
-
-before_script:
-  - npm run build
-  - npm run start
-
-script:
-  - npm run browserstack
-  - npm run test
