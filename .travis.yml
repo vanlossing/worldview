@@ -1,63 +1,73 @@
 matrix:
   include:
     - os: osx
+      name: 'OSX - e2e'
       language: node_js
       node_js: '8.15.1'
+      addons:
+        chrome: stable
+      before_install:
+         - "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --headless --disable-gpu --remote-debugging-port=9222 http://localhost &"
       install: npm install
       script:
         - npm run build
-        - npm run test
         - npm run start &
         # - travis_wait 40 npm run browserstack
-        - npm run e2e:headless
-    - os: osx
-      language: node_js
-      node_js: lts/* # latest LTS Node.js release
-      install: npm install
-      script: npm test
-    - os: linux
-      dist: xenial
-      language: python
-      node_js: '8.15.1'
-      python: '3.7'
-      sudo: required
-      before_install:
-        - python --version
-        - python3 --version
-        - nvm install 8.15.1
-      install: npm install
-      script: npm test
-    - os: linux
-      dist: xenial
-      language: python
-      node_js: 'lts/*'
-      python: '3.7'
-      sudo: required
-      before_install:
-        - python --version
-        - python3 --version
-        - nvm install lts/*
-      install: npm install
-      script: npm test
-    - os: windows
-      language: node_js
-      node_js: '8.15.1'
-      before_install:
-        - choco install python3
-        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
-        - python --version
-        - python -m ensurepip
-        - pip install virtualenv
-        - python -m venv $HOME/venv
-        - source $HOME/venv/Scripts/activate
-      install: npm install
-      script: npm test
-      cache:
-        directories:
-          - $HOME/venv
-          - c:/Python37
-          - c:/Python37/Scripts
-    - os: windows
+        - npm run e2e:headless:chrome
+    # - os: osx
+    #   name: 'OSX - e2e'
+    #   language: node_js
+    #   node_js: '8.15.1'
+    #   install: npm install
+    #   script: npm run test
+    # - os: osx
+    #   language: node_js
+    #   node_js: lts/* # latest LTS Node.js release
+    #   install: npm install
+    #   script: npm test
+    # - os: linux
+    #   dist: xenial
+    #   language: python
+    #   node_js: '8.15.1'
+    #   python: '3.7'
+    #   sudo: required
+    #   before_install:
+    #     - python --version
+    #     - python3 --version
+    #     - nvm install 8.15.1
+    #   install: npm install
+    #   script: npm test
+    # - os: linux
+    #   dist: xenial
+    #   language: python
+    #   node_js: 'lts/*'
+    #   python: '3.7'
+    #   sudo: required
+    #   before_install:
+    #     - python --version
+    #     - python3 --version
+    #     - nvm install lts/*
+    #   install: npm install
+    #   script: npm test
+    # - os: windows
+    #   language: node_js
+    #   node_js: '8.15.1'
+    #   before_install:
+    #     - choco install python3
+    #     - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
+    #     - python --version
+    #     - python -m ensurepip
+    #     - pip install virtualenv
+    #     - python -m venv $HOME/venv
+    #     - source $HOME/venv/Scripts/activate
+    #   install: npm install
+    #   script: npm test
+    #   cache:
+    #     directories:
+    #       - $HOME/venv
+    #       - c:/Python37
+    #       - c:/Python37/Scripts
+    # - os: windows
       language: node_js
       node_js: lts/* # latest LTS Node.js release
       before_install:
