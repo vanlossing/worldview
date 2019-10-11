@@ -4,12 +4,6 @@ matrix:
       language: node_js
       node_js: lts/* # latest LTS Node.js release
 
-
-env:
-  global:
-    BROWSERSTACK_USER=${BROWSERSTACK_USER}
-    BROWSERSTACK_ACCESS_KEY=${BROWSERSTACK_ACCESS_KEY}
-
 cache:
   directories:
     - node_modules
@@ -20,7 +14,7 @@ cache:
 install: npm install
 
 before_script:
-  - npm run build:prod
+  - npm run build
   - npm run start
 
 script:
