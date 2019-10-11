@@ -1,63 +1,9 @@
 matrix:
   include:
-    - os: linux
-      dist: xenial
-      language: python
-      node_js: '8.15.1'
-      python: '3.7'
-      sudo: required
-      before_install:
-        - python --version
-        - python3 --version
-        - nvm install 8.15.1
-    - os: linux
-      dist: xenial
-      language: python
-      node_js: 'lts/*'
-      python: '3.7'
-      sudo: required
-      before_install:
-        - python --version
-        - python3 --version
-        - nvm install lts/*
-    - os: osx
-      language: node_js
-      node_js: '8.15.1'
     - os: osx
       language: node_js
       node_js: lts/* # latest LTS Node.js release
-    - os: windows
-      language: node_js
-      node_js: '8.15.1'
-      before_install:
-        - choco install python3
-        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
-        - python --version
-        - python -m ensurepip
-        - pip install virtualenv
-        - python -m venv $HOME/venv
-        - source $HOME/venv/Scripts/activate
-      cache:
-        directories:
-          - $HOME/venv
-          - c:/Python37
-          - c:/Python37/Scripts
-    - os: windows
-      language: node_js
-      node_js: lts/* # latest LTS Node.js release
-      before_install:
-        - choco install python3
-        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
-        - python --version
-        - python -m ensurepip
-        - pip install virtualenv
-        - python -m venv $HOME/venv
-        - source $HOME/venv/Scripts/activate
-      cache:
-        directories:
-          - $HOME/venv
-          - c:/Python37
-          - c:/Python37/Scripts
+
 
 env:
   global:
@@ -74,17 +20,9 @@ cache:
 install: npm install
 
 before_script:
-  -|
-    if [ $TRAVIS_PULL_REQUEST != "false" ]; then
-      npm start &
-      npm run build
-    else
-      npm run build:tests
-    fi
+  - npm run build:prod
+  - npm run start
 
 script:
-  -|
-    if [ $TRAVIS_PULL_REQUEST != "false" ]; then
-      npm run browserstack
-    fi
-    npm run test
+  - npm run browserstack
+  - npm run test
