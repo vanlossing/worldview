@@ -59,6 +59,11 @@ matrix:
           - c:/Python37
           - c:/Python37/Scripts
 
+env:
+  global:
+    BROWSERSTACK_USER=${BROWSERSTACK_USER}
+    BROWSERSTACK_ACCESS_KEY=${BROWSERSTACK_ACCESS_KEY}
+
 cache:
   directories:
     - node_modules
@@ -68,4 +73,18 @@ cache:
 
 install: npm install
 
-script: npm test
+before_script:
+  -|
+    if [ $TRAVIS_PULL_REQUEST != "false" ]; then
+      npm start &
+      npm run build
+    else
+      npm run build:tests
+    fi
+
+script:
+  -|
+    if [ $TRAVIS_PULL_REQUEST != "false" ]; then
+      npm run browserstack
+    fi
+    npm run test
