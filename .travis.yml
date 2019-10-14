@@ -12,8 +12,8 @@ matrix:
       script:
         - npm run build
         - npm run start &
-        # - travis_wait 40 npm run browserstack
-        - npm run e2e:headless:chrome
+        - travis_wait 60 npm run browserstack
+        #- npm run e2e:headless:chrome
     # - os: osx
     #   name: 'OSX - e2e'
     #   language: node_js
