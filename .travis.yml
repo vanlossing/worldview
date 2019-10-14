@@ -4,6 +4,9 @@ matrix:
       name: 'OSX - e2e'
       language: node_js
       node_js: '8.15.1'
+      branches:
+        only:
+        - /(dependabot\/)/
       addons:
         chrome: stable
       before_install:
