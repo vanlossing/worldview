@@ -18,11 +18,12 @@ matrix:
         firefox: latest
       before_install:
          - "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --headless --disable-gpu --remote-debugging-port=9222 http://localhost &"
-      if: branch =~ /^dependabot\/.*$/ AND os IN (osx, windows)
+      if: branch =~ /^dependabot\/.*$/
       script:
         - npm run build
         - npm run start &
-        - npm run e2e:headless*
+        - npm run e2e:headless:chrome
+        - npm run e2e:headless:firefox
 
     - os: osx
       language: node_js
@@ -72,11 +73,12 @@ matrix:
           - $HOME/venv
           - c:/Python37
           - c:/Python37/Scripts
-      if: branch =~ /^dependabot\/.*$/ AND os IN (osx, windows)
+      if: branch =~ /^dependabot\/.*$/
       script:
         - npm run build
         - npm run start &
-        - npm run e2e:headless*
+        - npm run e2e:headless:chrome
+        - npm run e2e:headless:firefox
 
     - os: windows
       language: node_js
