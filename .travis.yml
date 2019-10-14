@@ -15,7 +15,7 @@ matrix:
       node_js: '8.15.1'
       branches:
         only:
-        - /(dependabot\/)/
+        - ^dependabot\/.*$
       addons:
         chrome: stable
       before_install:
@@ -34,7 +34,7 @@ matrix:
         firefox: latest
       branches:
         only:
-        - /(dependabot\/)/
+        - ^dependabot\/.*$
       install: npm install
       script:
         - npm run build
