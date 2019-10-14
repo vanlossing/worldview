@@ -27,81 +27,74 @@ matrix:
             - npm run e2e:headless:chrome
             - npm run e2e:headless:firefox
 
-    - os: osx
-      language: node_js
-      node_js: lts/* # latest LTS Node.js release
-      addons:
-        chrome: stable
-        firefox: latest
+    # - os: osx
+    #   language: node_js
+    #   node_js: lts/* # latest LTS Node.js release
+    #   addons:
+    #     chrome: stable
+    #     firefox: latest
 
-    - os: linux
-      dist: xenial
-      language: python
-      node_js: '8.15.1'
-      python: '3.7'
-      sudo: required
-      before_install:
-        - python --version
-        - python3 --version
-        - nvm install 8.15.1
+    # - os: linux
+    #   dist: xenial
+    #   language: python
+    #   node_js: '8.15.1'
+    #   python: '3.7'
+    #   sudo: required
+    #   before_install:
+    #     - python --version
+    #     - python3 --version
+    #     - nvm install 8.15.1
 
-    - os: linux
-      dist: xenial
-      language: python
-      node_js: 'lts/*'
-      python: '3.7'
-      sudo: required
-      before_install:
-        - python --version
-        - python3 --version
-        - nvm install lts/*
+    # - os: linux
+    #   dist: xenial
+    #   language: python
+    #   node_js: 'lts/*'
+    #   python: '3.7'
+    #   sudo: required
+    #   before_install:
+    #     - python --version
+    #     - python3 --version
+    #     - nvm install lts/*
 
-    - os: windows
-      language: node_js
-      node_js: '8.15.1'
-      addons:
-        chrome: stable
-        firefox: latest
-      before_install:
-        - choco install python3
-        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
-        - python --version
-        - python -m ensurepip
-        - pip install virtualenv
-        - python -m venv $HOME/venv
-        - source $HOME/venv/Scripts/activate
-        - "C:\Program Files (x86)\Google\Chrome\Application\chrome" --headless --disable-gpu --remote-debugging-port=9222 https://localhost
-      cache:
-        directories:
-          - $HOME/venv
-          - c:/Python37
-          - c:/Python37/Scripts
-      if: branch =~ /^dependabot\/.*$/
-      script:
-        - npm run build
-        - npm run start &
-        - npm run e2e:headless:chrome
-        - npm run e2e:headless:firefox
+    # - os: windows
+    #   language: node_js
+    #   node_js: '8.15.1'
+    #   addons:
+    #     chrome: stable
+    #     firefox: latest
+    #   before_install:
+    #     - choco install python3
+    #     - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
+    #     - python --version
+    #     - python -m ensurepip
+    #     - pip install virtualenv
+    #     - python -m venv $HOME/venv
+    #     - source $HOME/venv/Scripts/activate
+    #   cache:
+    #     directories:
+    #       - $HOME/venv
+    #       - c:/Python37
+    #       - c:/Python37/Scripts
 
-    - os: windows
-      language: node_js
-      node_js: lts/* # latest LTS Node.js release
-      addons:
-        chrome: stable
-        firefox: latest
-      before_install:
-        - choco install python3
-        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
-        - python --version
-        - python -m ensurepip
-        - pip install virtualenv
-        - python -m venv $HOME/venv
-        - source $HOME/venv/Scripts/activate
-      cache:
-        directories:
-          - $HOME/venv
-          - c:/Python37
-          - c:/Python37/Scripts
+    # - os: windows
+    #   language: node_js
+    #   node_js: lts/* # latest LTS Node.js release
+    #   addons:
+    #     chrome: stable
+    #     firefox: latest
+    #   before_install:
+    #     - choco install python3
+    #     - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
+    #     - python --version
+    #     - python -m ensurepip
+    #     - pip install virtualenv
+    #     - python -m venv $HOME/venv
+    #     - source $HOME/venv/Scripts/activate
+    #   cache:
+    #     directories:
+    #       - $HOME/venv
+    #       - c:/Python37
+    #       - c:/Python37/Scripts
 
 install: npm install
 script: npm test
