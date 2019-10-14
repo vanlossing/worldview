@@ -9,109 +9,96 @@ cache:
   pip: true
 matrix:
   include:
+
     - os: osx
-      name: 'OSX - Dependabot e2e Chrome'
       language: node_js
       node_js: '8.15.1'
-      branches:
-        only:
-        - /^dependabot\/.*$/
       addons:
         chrome: stable
+        firefox: latest
       before_install:
          - "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --headless --disable-gpu --remote-debugging-port=9222 http://localhost &"
-      install: npm install
-      script:
-        - npm run build
-        - npm run start &
-        - npm run e2e:headless:chrome
 
     - os: osx
-      name: 'OSX - Dependabot e2e Firefox'
+      language: node_js
+      node_js: lts/* # latest LTS Node.js release
+      addons:
+        chrome: stable
+        firefox: latest
+
+    - os: linux
+      dist: xenial
+      language: python
+      node_js: '8.15.1'
+      python: '3.7'
+      sudo: required
+      before_install:
+        - python --version
+        - python3 --version
+        - nvm install 8.15.1
+
+    - os: linux
+      dist: xenial
+      language: python
+      node_js: 'lts/*'
+      python: '3.7'
+      sudo: required
+      before_install:
+        - python --version
+        - python3 --version
+        - nvm install lts/*
+
+    - os: windows
       language: node_js
       node_js: '8.15.1'
       addons:
+        chrome: stable
         firefox: latest
-      branches:
-        only:
-        - /^dependabot\/.*$/
+      before_install:
+        - choco install python3
+        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
+        - python --version
+        - python -m ensurepip
+        - pip install virtualenv
+        - python -m venv $HOME/venv
+        - source $HOME/venv/Scripts/activate
+      cache:
+        directories:
+          - $HOME/venv
+          - c:/Python37
+          - c:/Python37/Scripts
+
+    - os: windows
+      language: node_js
+      node_js: lts/* # latest LTS Node.js release
+      addons:
+        chrome: stable
+        firefox: latest
+      before_install:
+        - choco install python3
+        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
+        - python --version
+        - python -m ensurepip
+        - pip install virtualenv
+        - python -m venv $HOME/venv
+        - source $HOME/venv/Scripts/activate
+      cache:
+        directories:
+          - $HOME/venv
+          - c:/Python37
+          - c:/Python37/Scripts
+
+jobs:
+  include:
+    - stage: install and unit test
       install: npm install
+      script: npm test
+    - stage: dependabot e2e
+      if: branch =~ /^dependabot\/.*$/ AND os IN (osx, windows)
       script:
         - npm run build
         - npm run start &
-        - npm run e2e:headless:firefox
-        # - travis_wait 60 npm run browserstack
-
-    # - os: osx
-    #   language: node_js
-    #   node_js: lts/* # latest LTS Node.js release
-    #   install: npm install
-    #   script: npm test
-
-    # - os: linux
-    #   dist: xenial
-    #   language: python
-    #   node_js: '8.15.1'
-    #   python: '3.7'
-    #   sudo: required
-    #   before_install:
-    #     - python --version
-    #     - python3 --version
-    #     - nvm install 8.15.1
-    #   install: npm install
-    #   script: npm test
-
-    # - os: linux
-    #   dist: xenial
-    #   language: python
-    #   node_js: 'lts/*'
-    #   python: '3.7'
-    #   sudo: required
-    #   before_install:
-    #     - python --version
-    #     - python3 --version
-    #     - nvm install lts/*
-    #   install: npm install
-    #   script: npm test
-
-    # - os: windows
-    #   language: node_js
-    #   node_js: '8.15.1'
-    #   before_install:
-    #     - choco install python3
-    #     - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
-    #     - python --version
-    #     - python -m ensurepip
-    #     - pip install virtualenv
-    #     - python -m venv $HOME/venv
-    #     - source $HOME/venv/Scripts/activate
-    #   install: npm install
-    #   script: npm test
-    #   cache:
-    #     directories:
-    #       - $HOME/venv
-    #       - c:/Python37
-    #       - c:/Python37/Scripts
-
-    # - os: windows
-    #   language: node_js
-    #   node_js: lts/* # latest LTS Node.js release
-    #   before_install:
-    #     - choco install python3
-    #     - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
-    #     - python --version
-    #     - python -m ensurepip
-    #     - pip install virtualenv
-    #     - python -m venv $HOME/venv
-    #     - source $HOME/venv/Scripts/activate
-    #   install: npm install
-    #   script: npm test
-    #   cache:
-    #     directories:
-    #       - $HOME/venv
-    #       - c:/Python37
-    #       - c:/Python37/Scripts
-
+        - npm run e2e:headless*
 
 
 
