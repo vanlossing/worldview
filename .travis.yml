@@ -10,7 +10,6 @@ cache:
 
 matrix:
   include:
-
     - os: osx
       language: node_js
       node_js: '8.15.1'
