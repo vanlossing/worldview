@@ -1,7 +1,16 @@
+env:
+  global:
+    - MOZ_HEADLESS=1
+cache:
+  directories:
+    - node_modules
+    - .python
+  npm: true
+  pip: true
 matrix:
   include:
     - os: osx
-      name: 'OSX - e2e'
+      name: 'OSX - Dependabot e2e Chrome'
       language: node_js
       node_js: '8.15.1'
       branches:
@@ -18,9 +27,11 @@ matrix:
         - npm run e2e:headless:chrome
 
     - os: osx
-      name: 'OSX - Dependabot Browserstack'
+      name: 'OSX - Dependabot e2e Firefox'
       language: node_js
       node_js: '8.15.1'
+      addons:
+        firefox: latest
       branches:
         only:
         - /(dependabot\/)/
@@ -28,84 +39,80 @@ matrix:
       script:
         - npm run build
         - npm run start &
-        - travis_wait 60 npm run browserstack
+        - npm run e2e:headless:firefox
+        # - travis_wait 60 npm run browserstack
 
-    - os: osx
-      language: node_js
-      node_js: lts/* # latest LTS Node.js release
-      install: npm install
-      script: npm test
+    # - os: osx
+    #   language: node_js
+    #   node_js: lts/* # latest LTS Node.js release
+    #   install: npm install
+    #   script: npm test
 
-    - os: linux
-      dist: xenial
-      language: python
-      node_js: '8.15.1'
-      python: '3.7'
-      sudo: required
-      before_install:
-        - python --version
-        - python3 --version
-        - nvm install 8.15.1
-      install: npm install
-      script: npm test
+    # - os: linux
+    #   dist: xenial
+    #   language: python
+    #   node_js: '8.15.1'
+    #   python: '3.7'
+    #   sudo: required
+    #   before_install:
+    #     - python --version
+    #     - python3 --version
+    #     - nvm install 8.15.1
+    #   install: npm install
+    #   script: npm test
 
-    - os: linux
-      dist: xenial
-      language: python
-      node_js: 'lts/*'
-      python: '3.7'
-      sudo: required
-      before_install:
-        - python --version
-        - python3 --version
-        - nvm install lts/*
-      install: npm install
-      script: npm test
+    # - os: linux
+    #   dist: xenial
+    #   language: python
+    #   node_js: 'lts/*'
+    #   python: '3.7'
+    #   sudo: required
+    #   before_install:
+    #     - python --version
+    #     - python3 --version
+    #     - nvm install lts/*
+    #   install: npm install
+    #   script: npm test
 
-    - os: windows
-      language: node_js
-      node_js: '8.15.1'
-      before_install:
-        - choco install python3
-        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
-        - python --version
-        - python -m ensurepip
-        - pip install virtualenv
-        - python -m venv $HOME/venv
-        - source $HOME/venv/Scripts/activate
-      install: npm install
-      script: npm test
-      cache:
-        directories:
-          - $HOME/venv
-          - c:/Python37
-          - c:/Python37/Scripts
+    # - os: windows
+    #   language: node_js
+    #   node_js: '8.15.1'
+    #   before_install:
+    #     - choco install python3
+    #     - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
+    #     - python --version
+    #     - python -m ensurepip
+    #     - pip install virtualenv
+    #     - python -m venv $HOME/venv
+    #     - source $HOME/venv/Scripts/activate
+    #   install: npm install
+    #   script: npm test
+    #   cache:
+    #     directories:
+    #       - $HOME/venv
+    #       - c:/Python37
+    #       - c:/Python37/Scripts
 
-    - os: windows
-      language: node_js
-      node_js: lts/* # latest LTS Node.js release
-      before_install:
-        - choco install python3
-        - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
-        - python --version
-        - python -m ensurepip
-        - pip install virtualenv
-        - python -m venv $HOME/venv
-        - source $HOME/venv/Scripts/activate
-      install: npm install
-      script: npm test
-      cache:
-        directories:
-          - $HOME/venv
-          - c:/Python37
-          - c:/Python37/Scripts
+    # - os: windows
+    #   language: node_js
+    #   node_js: lts/* # latest LTS Node.js release
+    #   before_install:
+    #     - choco install python3
+    #     - export PATH="/c/Python37:/c/Python37/Scripts:$PATH"
+    #     - python --version
+    #     - python -m ensurepip
+    #     - pip install virtualenv
+    #     - python -m venv $HOME/venv
+    #     - source $HOME/venv/Scripts/activate
+    #   install: npm install
+    #   script: npm test
+    #   cache:
+    #     directories:
+    #       - $HOME/venv
+    #       - c:/Python37
+    #       - c:/Python37/Scripts
 
-cache:
-  directories:
-    - node_modules
-    - .python
-  npm: true
-  pip: true
+
 
 
 
