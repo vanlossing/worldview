@@ -12,6 +12,18 @@ matrix:
       script:
         - npm run build
         - npm run start &
+        - npm run e2e:headless:chrome
+    - os: osx
+      name: 'OSX - Dependabot Browserstack'
+      language: node_js
+      node_js: '8.15.1'
+      branches:
+        only:
+        - /(dependabot\/)/
+      install: npm install
+      script:
+        - npm run build
+        - npm run start &
         - travis_wait 60 npm run browserstack
         #- npm run e2e:headless:chrome
     # - os: osx
