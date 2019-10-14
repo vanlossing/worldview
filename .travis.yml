@@ -71,7 +71,7 @@ matrix:
         - pip install virtualenv
         - python -m venv $HOME/venv
         - source $HOME/venv/Scripts/activate
-        - "C:\Program Files (x86)\Google\Chrome\Application\chrome" --headless --no-sandbox --disable-gpu https://localhost
+        - "C:\Program Files (x86)\Google\Chrome\Application\chrome" --headless --disable-gpu --remote-debugging-port=9222 https://localhost
       cache:
         directories:
           - $HOME/venv
