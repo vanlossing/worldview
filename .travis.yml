@@ -71,6 +71,7 @@ matrix:
         - pip install virtualenv
         - python -m venv $HOME/venv
         - source $HOME/venv/Scripts/activate
+        - START /MIN "C:\Program Files (x86)\Google\Chrome\Application\chrome" --headless --disable-gpu --enable-logging https://localhost
       cache:
         directories:
           - $HOME/venv
