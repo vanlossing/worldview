@@ -1,6 +1,7 @@
 import { findIndex as lodashFindIndex } from 'lodash';
 import {
   addLayer as addLayerSelector,
+  addOrbitTrack as addOrbitTrackSelector,
   resetLayers as resetLayersSelector,
   getLayers as getLayersSelector,
   activateLayersForEventCategory as activateLayersForEventCategorySelector
@@ -15,7 +16,8 @@ import {
   TOGGLE_LAYER_VISIBILITY,
   REMOVE_LAYER,
   UPDATE_OPACITY,
-  ADD_LAYERS_FOR_EVENT
+  ADD_LAYERS_FOR_EVENT,
+  ADD_ORBIT_TRACK
 } from './constants';
 import { selectProduct } from '../data/actions';
 
@@ -49,6 +51,28 @@ export function activateLayersForEventCategory(activeLayers) {
     });
   };
 }
+export function addOrbitTrack(trackId, layer) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { layers, compare } = state;
+    const { activeString } = compare;
+    const newLayers = addOrbitTrackSelector(
+      trackId,
+      layer,
+      {},
+      layers[activeString],
+      layers.layerConfig
+    );
+
+    dispatch({
+      type: ADD_ORBIT_TRACK,
+      trackId,
+      activeString,
+      layers: newLayers
+    });
+  };
+}
+
 export function addLayer(id, spec) {
   spec = spec || {};
   return (dispatch, getState) => {
@@ -86,14 +110,19 @@ export function initSecondLayerGroup() {
   return {
     type: INIT_SECOND_LAYER_GROUP
   };
-}
-export function reorderLayers(layerArray) {
-  return {
-    type: REORDER_LAYER_GROUP,
-    layers: layerArray
-  };
-}
+};
 
+export function reorderLayers(layerArray) {
+  return (dispatch, getState) => {
+    const { compare } = getState();
+    const activeString = compare.isCompareA ? 'active' : 'activeB';
+    dispatch({
+      type: REORDER_LAYER_GROUP,
+      layers: layerArray,
+      activeString
+    });
+  };
+};
 export function layerHover(id, isMouseOver) {
   return {
     type: ON_LAYER_HOVER,

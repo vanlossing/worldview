@@ -7,7 +7,8 @@ import {
   TOGGLE_LAYER_VISIBILITY,
   REMOVE_LAYER,
   UPDATE_OPACITY,
-  ADD_LAYERS_FOR_EVENT
+  ADD_LAYERS_FOR_EVENT,
+  ADD_ORBIT_TRACK
 } from './constants';
 import {
   SET_CUSTOM as SET_CUSTOM_PALETTE,
@@ -50,6 +51,7 @@ export function layerReducer(state = initialState, action) {
     case ADD_LAYER:
     case REORDER_LAYER_GROUP:
     case ADD_LAYERS_FOR_EVENT:
+    case ADD_ORBIT_TRACK:
       return lodashAssign({}, state, {
         [layerGroupStr]: action.layers
       });

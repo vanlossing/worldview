@@ -101,6 +101,10 @@ export function mapui(models, config, store, ui) {
         const def = lodashFind(action.layers, { id: action.id });
         return addLayer(def);
       }
+      case layerConstants.ADD_ORBIT_TRACK: {
+        const def = lodashFind(action.layers, { id: action.trackId });
+        return addLayer(def);
+      }
       case CLEAR_ROTATE:
         return rotation.reset(self.selected);
       case LOCATION_POP_ACTION: {
@@ -470,6 +474,8 @@ export function mapui(models, config, store, ui) {
         updateGraticules(defs, group);
       }
     });
+
+    console.log(layersState.active);
   };
   /*
    * Sets new opacity to layer

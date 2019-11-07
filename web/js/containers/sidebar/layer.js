@@ -19,6 +19,7 @@ import {
   removeLayer,
   layerHover
 } from '../../modules/layers/actions';
+// import { getLayers } from '../../modules/layers/selectors';
 
 const visibilityButtonClasses = 'hdanchor hide hideReg bank-item-img';
 const getItemStyle = (isDragging, draggableStyle) => ({
@@ -28,6 +29,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   top: null,
   left: null
 });
+
 class Layer extends React.Component {
   constructor(props) {
     super(props);
@@ -116,6 +118,7 @@ class Layer extends React.Component {
 
   render() {
     const {
+      tracksForLayer,
       layerGroupName,
       onRemoveClick,
       toggleVisibility,
@@ -134,6 +137,38 @@ class Layer extends React.Component {
       isInProjection
     } = this.props;
 
+    // TODO fix drag/drop issue
+
+    const layerPanelClass = isDisabled
+      ? layerClasses + ' disabled layer-hidden'
+      : !isVisible
+        ? layerClasses + ' layer-hidden'
+        : zot
+          ? layerClasses + ' layer-enabled layer-visible zotted'
+          : layerClasses + ' layer-enabled layer-visible';
+
+    const visibilityToggleClass = isDisabled
+      ? visibilityButtonClasses + ' layer-hidden'
+      : !isVisible
+        ? visibilityButtonClasses + ' layer-hidden'
+        : visibilityButtonClasses + ' layer-enabled layer-visible';
+
+    const visibilityToggleIconClass = isDisabled
+      ? 'fas fa-ban layer-eye-icon'
+      : !isVisible
+        ? 'far fa-eye-slash layer-eye-icon'
+        : 'far fa-eye layer-eye-icon';
+
+    const visibilityToggleTitle = !isVisible && !isDisabled
+      ? 'Show Layer'
+      : isDisabled
+        ? this.getDisabledTitle(layer)
+        : 'Hide Layer';
+
+    const zotTitle = zot
+      ? `Layer is overzoomed by ${zot.toString()} x its maximum zoom level`
+      : '';
+
     return (
       <Draggable
         draggableId={util.encodeId(layer.id) + '-' + layerGroupName}
@@ -151,60 +186,28 @@ class Layer extends React.Component {
                 snapshot.isDragging,
                 provided.draggableProps.style
               )}
-              className={
-                isDisabled
-                  ? layerClasses + ' disabled layer-hidden'
-                  : !isVisible
-                    ? layerClasses + ' layer-hidden'
-                    : zot
-                      ? layerClasses + ' layer-enabled layer-visible zotted'
-                      : layerClasses + ' layer-enabled layer-visible'
-              }
+              className={layerPanelClass}
               onMouseEnter={() => hover(layer.id, true)}
               onMouseLeave={() => hover(layer.id, false)}
             >
               <a
-                className={
-                  isDisabled
-                    ? visibilityButtonClasses + ' layer-hidden'
-                    : !isVisible
-                      ? visibilityButtonClasses + ' layer-hidden'
-                      : visibilityButtonClasses + ' layer-enabled layer-visible'
-                }
+                className={visibilityToggleClass}
                 id={'hide' + util.encodeId(layer.id)}
                 onClick={() => toggleVisibility(layer.id, !isVisible)}
-                title={
-                  !isVisible && !isDisabled
-                    ? 'Show Layer'
-                    : isDisabled
-                      ? this.getDisabledTitle(layer)
-                      : 'Hide Layer'
-                }
+                title={visibilityToggleTitle}
               >
-                <i
-                  className={
-                    isDisabled
-                      ? 'fas fa-ban layer-eye-icon'
-                      : !isVisible
-                        ? 'far fa-eye-slash layer-eye-icon'
-                        : 'far fa-eye layer-eye-icon'
-                  }
-                />
+                <i className={visibilityToggleIconClass} />
               </a>
 
-              <div
-                className={'zot'}
-                title={
-                  zot
-                    ? 'Layer is overzoomed by ' +
-                    zot.toString() +
-                    'x its maximum zoom level'
-                    : ''
-                }
-              >
+              {/* Zot */}
+              <div className={'zot'} title={zotTitle}>
                 <b>!</b>
               </div>
+
+              {/* Main Layer Panel Contents */}
               <div className="layer-main">
+
+                {/* Info / Options / Close Buttons */}
                 <a
                   id={'close' + layerGroupName + util.encodeId(layer.id)}
                   title={'Remove Layer'}
@@ -233,9 +236,27 @@ class Layer extends React.Component {
                 >
                   <i className="fa fa-info wv-layers-info-icon" />
                 </a>
+
+                {/* Title / Subtitle */}
                 <h4 title={name.title}>{names.title}</h4>
                 <p dangerouslySetInnerHTML={{ __html: names.subtitle }} />
                 {hasPalette ? this.getPaletteLegend() : ''}
+
+                {/* Sub-Layer (orbit tracks) */}
+                {tracksForLayer.length > 0 && tracksForLayer.map(orbitTrack => {
+                  const { id, visible, daynight, track } = orbitTrack;
+                  return (
+                    <div key={id}>
+                      <span onClick={() => toggleVisibility(id, !visible)}>
+                        {visible ? 'HIDE' : 'SHOW'}
+                      </span>
+                      <span style={{ textTransform: 'capitalize', marginLeft: '10px' }}>
+                        {track + ' / ' + daynight}
+                      </span>
+                    </div>
+                  );
+                })
+                }
               </div>
             </li>
           ) : (
@@ -281,6 +302,7 @@ Layer.propTypes = {
   requestPalette: PropTypes.func,
   runningObject: PropTypes.object,
   toggleVisibility: PropTypes.func,
+  tracksForLayer: PropTypes.array,
   zot: PropTypes.number
 };
 function mapStateToProps(state, ownProps) {
@@ -293,17 +315,20 @@ function mapStateToProps(state, ownProps) {
     index,
     layerGroupName
   } = ownProps;
-  const { palettes, config, map } = state;
+  const { palettes, config, map, layers } = state;
   const hasPalette = !lodashIsEmpty(layer.palette);
   const renderedPalettes = palettes.rendered;
   const paletteName = lodashGet(config, `layers['${layer.id}'].palette.id`);
-  const paletteLegends =
-    hasPalette && renderedPalettes[paletteName]
-      ? getPaletteLegends(layer.id, layerGroupName, state)
-      : [];
+  const paletteLegends = hasPalette && renderedPalettes[paletteName]
+    ? getPaletteLegends(layer.id, layerGroupName, state)
+    : [];
   const isCustomPalette = hasPalette && palettes.custom[layer.id];
+  const tracksForLayer = layers.active.filter(activeLayer => {
+    return (layer.tracks || []).some(track => activeLayer.id === track);
+  });
 
   return {
+    tracksForLayer,
     layer,
     isDisabled,
     isVisible,
