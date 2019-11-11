@@ -241,7 +241,7 @@ class Layer extends React.Component {
                 <p dangerouslySetInnerHTML={{ __html: names.subtitle }} />
                 {hasPalette ? this.getPaletteLegend() : ''}
 
-                {tracksForLayer.length > 0 && (
+                {/* {tracksForLayer.length > 0 && (
                   <div className="wv-orbit-track-layers">
                     {tracksForLayer.map(track => {
                       return (
@@ -249,7 +249,7 @@ class Layer extends React.Component {
                       );
                     })}
                   </div>
-                )}
+                )} */}
 
               </div>
             </li>

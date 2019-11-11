@@ -15,7 +15,7 @@ class OrbitTracksToggle extends React.Component {
 
     return (
       <div className="layer-orbit-tracks settings-component">
-        <h2 className="wv-header"> Orbit Tracks </h2>
+        <h2 className="wv-header"> Orbit Tracks &amp; Overpass Time </h2>
         { trackLayers.map(({ id, track, daynight }) => {
           const isEnabled = activeLayers.some(l => l.id === id);
           const onCheck = () => isEnabled ? removeLayer(id) : addLayer(id);
